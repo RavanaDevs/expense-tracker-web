@@ -1,10 +1,23 @@
-export default function ExpenseStats() {
-  const stats = {
-    total: 52.50,
-    average: 26.25,
-    mostExpensive: 'Food',
-    topCategory: 'Food'
+interface ExpenseStatsProps {
+  dateRange: {
+    startDate: string;
+    endDate: string;
   };
+}
+
+export default function ExpenseStats({ dateRange }: ExpenseStatsProps) {
+  // In a real app, you would calculate these stats based on the filtered expenses
+  const calculateStats = () => {
+    // Mock calculation based on date range
+    return {
+      total: 97.50,
+      average: 24.38,
+      mostExpensive: 'Food',
+      topCategory: 'Food'
+    };
+  };
+
+  const stats = calculateStats();
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
