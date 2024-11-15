@@ -17,4 +17,6 @@ export interface PaginationInfo {
   currentPage: number;
   totalPages: number;
   itemsPerPage: number;
-} 
+}
+
+export type CurrencyPosition = 'before' | 'after'; 

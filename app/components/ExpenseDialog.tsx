@@ -2,18 +2,15 @@
 
 import { useState, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { CURRENCY, CATEGORY_EMOJIS } from '@/app/constants';
+import { formatCurrency } from '@/app/utils/currency';
+import { Expense, CurrencyPosition } from '@/app/types';
 
 interface ExpenseDialogProps {
   isOpen: boolean;
   closeDialog: () => void;
-  expense: {
-    id: number;
-    amount: number;
-    category: string;
-    date: string;
-    description?: string;
-  };
-  onSave: (updatedExpense: any) => void;
+  expense: Expense;
+  onSave: (updatedExpense: Expense) => void;
 }
 
 export default function ExpenseDialog({ isOpen, closeDialog, expense, onSave }: ExpenseDialogProps) {
@@ -28,15 +25,14 @@ export default function ExpenseDialog({ isOpen, closeDialog, expense, onSave }: 
     closeDialog();
   };
 
-  const getEmoji = (category: string) => {
-    const emojis: {[key: string]: string} = {
-      food: '🍕',
-      transport: '🚗',
-      utilities: '🏠',
-      entertainment: '🎮',
-      other: '📦'
-    };
-    return emojis[category] || '📦';
+  const renderCurrencySymbol = (position: CurrencyPosition) => {
+    if (CURRENCY.position !== position) return null;
+    
+    return (
+      <div className={`pointer-events-none absolute inset-y-0 ${position === 'before' ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center`}>
+        <span className="text-slate-500 sm:text-sm">{CURRENCY.symbol}</span>
+      </div>
+    );
   };
 
   return (
@@ -69,7 +65,7 @@ export default function ExpenseDialog({ isOpen, closeDialog, expense, onSave }: 
                 <div className="bg-slate-50 px-6 py-4 border-b border-slate-200">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      <span className="text-2xl">{getEmoji(editedExpense.category)}</span>
+                      <span className="text-2xl">{CATEGORY_EMOJIS[editedExpense.category]}</span>
                       <Dialog.Title as="h3" className="text-lg font-medium text-slate-900 capitalize">
                         {editedExpense.category}
                       </Dialog.Title>
@@ -86,17 +82,17 @@ export default function ExpenseDialog({ isOpen, closeDialog, expense, onSave }: 
                       Amount
                     </label>
                     <div className="relative rounded-md shadow-sm">
-                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                        <span className="text-slate-500 sm:text-sm">$</span>
-                      </div>
+                      {renderCurrencySymbol('before')}
                       <input
                         type="number"
                         value={editedExpense.amount}
                         onChange={(e) => setEditedExpense({ ...editedExpense, amount: parseFloat(e.target.value) })}
-                        className="block w-full rounded-md border-0 py-1.5 pl-7 text-slate-900 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-slate-800 sm:text-sm sm:leading-6"
+                        className={`block w-full rounded-md border-0 py-1.5 text-slate-900 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-slate-800 sm:text-sm sm:leading-6
+                          ${CURRENCY.position === 'before' ? 'pl-7' : 'pr-7'}`}
                         step="0.01"
                         required
                       />
+                      {renderCurrencySymbol('after')}
                     </div>
                   </div>
 

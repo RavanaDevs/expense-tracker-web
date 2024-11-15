@@ -1,6 +1,12 @@
-import { ExpenseCategory } from "@/app/types";
+import { ExpenseCategory, CurrencyPosition } from "@/app/types";
 
 export const ITEMS_PER_PAGE = 5;
+
+export const CURRENCY = {
+  symbol: 'Rs.',
+  code: 'LKR',
+  position: 'after' as CurrencyPosition
+};
 
 export const CATEGORY_EMOJIS: Record<ExpenseCategory, string> = {
   food: '🍕',

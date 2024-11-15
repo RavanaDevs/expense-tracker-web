@@ -1,6 +1,7 @@
 import { Expense } from "@/app/types";
 import { CATEGORY_EMOJIS } from "@/app/constants";
 import { formatDate } from "@/app/utils/date";
+import { formatCurrency } from "@/app/utils/currency";
 
 interface ExpenseCardProps {
   expense: Expense;
@@ -20,7 +21,7 @@ export default function ExpenseCard({ expense, onClick }: ExpenseCardProps) {
           <p className="text-xs text-slate-500">{formatDate(expense.date)}</p>
         </div>
       </div>
-      <span className="font-medium text-slate-900">${expense.amount.toFixed(2)}</span>
+      <span className="font-medium text-slate-900">{formatCurrency(expense.amount)}</span>
     </div>
   );
 } 
