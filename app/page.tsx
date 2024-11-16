@@ -1,4 +1,4 @@
-import ExpenseForm from './components/ExpenseForm';
+import ExpenseForm from '@/components/ExpenseForm';
 
 export default function Home() {
   return (
