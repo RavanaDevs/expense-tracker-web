@@ -37,9 +37,18 @@ export interface CurrencySettings {
   position: CurrencyPosition;
 }
 
+export interface Category {
+  id: string;
+  value: string;
+  label: string;
+  emoji: string;
+  enabled: boolean;
+}
+
 export interface UserSettings {
   currency: CurrencySettings;
   quickAmounts: QuickAmount[];
+  categories: Category[];
   theme: Theme;
 }
 

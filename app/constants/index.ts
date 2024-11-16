@@ -1,4 +1,4 @@
-import { ExpenseCategory, CurrencySettings, QuickAmount } from '@/app/types';
+import { ExpenseCategory, CurrencySettings, QuickAmount, Category } from '@/app/types';
 
 export const DEFAULT_CURRENCY_SETTINGS: CurrencySettings = {
   symbol: '$',
@@ -15,20 +15,29 @@ export const DEFAULT_QUICK_AMOUNTS: QuickAmount[] = [
   { id: '6', amount: 1000, enabled: true },
 ];
 
+export const DEFAULT_CATEGORIES: Category[] = [
+  { id: '1', value: 'food', label: 'Food & Dining', emoji: '🍽️', enabled: true },
+  { id: '2', value: 'transportation', label: 'Transportation', emoji: '🚗', enabled: true },
+  { id: '3', value: 'entertainment', label: 'Entertainment', emoji: '🎮', enabled: true },
+  { id: '4', value: 'utilities', label: 'Bills & Utilities', emoji: '📱', enabled: true },
+  { id: '5', value: 'shopping', label: 'Shopping', emoji: '🛍️', enabled: true },
+  { id: '6', value: 'healthcare', label: 'Healthcare', emoji: '🏥', enabled: true },
+  { id: '7', value: 'education', label: 'Education', emoji: '📚', enabled: true },
+  { id: '8', value: 'other', label: 'Other', emoji: '📌', enabled: true },
+];
+
 export const CATEGORY_OPTIONS = [
-  { value: 'food', label: 'Food & Dining', emoji: '🍽️' },
-  { value: 'transportation', label: 'Transportation', emoji: '🚗' },
-  { value: 'entertainment', label: 'Entertainment', emoji: '🎮' },
-  { value: 'utilities', label: 'Bills & Utilities', emoji: '📱' },
-  { value: 'shopping', label: 'Shopping', emoji: '🛍️' },
-  { value: 'healthcare', label: 'Healthcare', emoji: '🏥' },
-  { value: 'education', label: 'Education', emoji: '📚' },
-  { value: 'other', label: 'Other', emoji: '📌' },
-] as const;
+  { value: 'food', label: 'Food', emoji: '🍕 ' },
+  { value: 'transport', label: 'Transport', emoji: '🚗 ' },
+  { value: 'entertainment', label: 'Entertainment', emoji: '🎮 ' },
+  { value: 'shopping', label: 'Shopping', emoji: '🛍️ ' },
+  { value: 'bills', label: 'Bills', emoji: '📄 ' },
+  { value: 'other', label: 'Other', emoji: '📌 ' },
+]; 
 
 export const CATEGORY_EMOJIS: Record<ExpenseCategory, string> = 
   Object.fromEntries(
-    CATEGORY_OPTIONS.map(opt => [opt.value, opt.emoji])
+    DEFAULT_CATEGORIES.map(cat => [cat.value, cat.emoji])
   ) as Record<ExpenseCategory, string>;
 
 export const ITEMS_PER_PAGE = 10;

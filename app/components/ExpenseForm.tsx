@@ -3,23 +3,23 @@
 import { useState } from 'react';
 import { useStore } from '@/app/store/useStore';
 import { useCurrencyStore } from '@/app/store/currencyStore';
-import { CATEGORY_OPTIONS } from '@/app/constants';
+import { CATEGORY_OPTIONS } from "@/app/constants/index"
 import { CurrencyPosition, ExpenseCategory } from '@/app/types';
 
 export default function ExpenseForm() {
-  const { settings: { quickAmounts } } = useStore();
+  const settings = useStore((state) => state.settings);
+  const addExpense = useStore((state) => state.addExpense);
   const { settings: currencySettings } = useCurrencyStore();
-  const addExpense = useStore(state => state.addExpense);
 
   const [expense, setExpense] = useState({
     amount: '',
     category: 'other' as ExpenseCategory
   });
 
-  const enabledQuickAmounts = quickAmounts
-    .filter(qa => qa.enabled)
+  const enabledQuickAmounts = settings.quickAmounts
+    ?.filter(qa => qa.enabled)
     .map(qa => qa.amount)
-    .sort((a, b) => a - b);
+    .sort((a, b) => a - b) || [];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +44,7 @@ export default function ExpenseForm() {
 
   const renderCurrencySymbol = (position: CurrencyPosition) => {
     if (currencySettings.position !== position) return null;
-    
+
     return (
       <div className={`pointer-events-none absolute inset-y-0 ${position === 'before' ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center`}>
         <span className="text-slate-600 dark:text-slate-400 sm:text-sm">{currencySettings.symbol}</span>
@@ -94,7 +94,7 @@ export default function ExpenseForm() {
         >
           {CATEGORY_OPTIONS.map(option => (
             <option key={option.value} value={option.value} className="dark:bg-slate-700">
-              {option.emoji}{option.label}
+              {option.label}
             </option>
           ))}
         </select>
