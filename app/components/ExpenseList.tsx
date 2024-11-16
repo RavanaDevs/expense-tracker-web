@@ -4,8 +4,9 @@ import { useState } from 'react';
 import ExpenseDialog from './ExpenseDialog';
 import Pagination from './Pagination';
 import ExpenseCard from './expenses/ExpenseCard';
-import { Expense } from '@/app/types';
+import { useExpenses } from '@/app/store/selectors';
 import { ITEMS_PER_PAGE } from '@/app/constants';
+import { Expense } from '@/app/types';
 
 interface ExpenseListProps {
   dateRange: {
@@ -19,56 +20,12 @@ export default function ExpenseList({ dateRange }: ExpenseListProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Temporary mock data with dates
-  const allExpenses = [
-    { 
-      id: 1, 
-      amount: 50.00, 
-      category: 'food' as const, 
-      date: '2024-03-20',
-      description: 'Lunch with colleagues'
-    },
-    { 
-      id: 2, 
-      amount: 2.50, 
-      category: 'transport' as const, 
-      date: '2024-03-19',
-      description: 'Bus fare'
-    },
-    { 
-      id: 3, 
-      amount: 30.00, 
-      category: 'food' as const, 
-      date: '2024-03-15',
-      description: 'Groceries'
-    },
-    { 
-      id: 4, 
-      amount: 15.00, 
-      category: 'entertainment' as const, 
-      date: '2024-03-10',
-      description: 'Movie ticket'
-    },
-    { 
-      id: 5, 
-      amount: 25.00, 
-      category: 'food' as const, 
-      date: '2024-03-09',
-      description: 'Dinner'
-    },
-    { 
-      id: 6, 
-      amount: 45.00, 
-      category: 'utilities' as const, 
-      date: '2024-03-08',
-      description: 'Internet bill'
-    },
-  ];
+  const { expenses, updateExpense, deleteExpense } = useExpenses();
 
   // Filter expenses based on date range
-  const filteredExpenses = allExpenses.filter(expense => {
-    return expense.date >= dateRange.startDate && expense.date <= dateRange.endDate;
-  });
+  const filteredExpenses = expenses.filter(expense => 
+    expense.date >= dateRange.startDate && expense.date <= dateRange.endDate
+  );
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredExpenses.length / ITEMS_PER_PAGE);
@@ -81,13 +38,13 @@ export default function ExpenseList({ dateRange }: ExpenseListProps) {
   };
 
   const handleSaveExpense = (updatedExpense: Expense) => {
-    // In a real app, you would update the expense in your database
-    console.log('Saving updated expense:', updatedExpense);
+    updateExpense(updatedExpense.id, updatedExpense);
+    setIsDialogOpen(false);
   };
 
   if (filteredExpenses.length === 0) {
     return (
-      <div className="text-center py-8 text-slate-600">
+      <div className="text-center py-8 text-slate-600 dark:text-slate-400">
         No expenses found for the selected date range
       </div>
     );

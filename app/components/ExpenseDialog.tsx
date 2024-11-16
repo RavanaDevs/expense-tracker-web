@@ -2,8 +2,9 @@
 
 import { useState, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { CURRENCY, CATEGORY_EMOJIS } from '@/app/constants';
+import { CATEGORY_EMOJIS } from '@/app/constants';
 import { formatCurrency } from '@/app/utils/currency';
+import { useCurrencyStore } from '@/app/store/currencyStore';
 import { Expense, CurrencyPosition } from '@/app/types';
 
 interface ExpenseDialogProps {
@@ -14,6 +15,7 @@ interface ExpenseDialogProps {
 }
 
 export default function ExpenseDialog({ isOpen, closeDialog, expense, onSave }: ExpenseDialogProps) {
+  const { settings: currencySettings } = useCurrencyStore();
   const [editedExpense, setEditedExpense] = useState({
     ...expense,
     description: expense.description || '',
@@ -26,11 +28,11 @@ export default function ExpenseDialog({ isOpen, closeDialog, expense, onSave }: 
   };
 
   const renderCurrencySymbol = (position: CurrencyPosition) => {
-    if (CURRENCY.position !== position) return null;
+    if (currencySettings.position !== position) return null;
     
     return (
       <div className={`pointer-events-none absolute inset-y-0 ${position === 'before' ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center`}>
-        <span className="text-slate-500 sm:text-sm">{CURRENCY.symbol}</span>
+        <span className="text-slate-500 sm:text-sm">{currencySettings.symbol}</span>
       </div>
     );
   };

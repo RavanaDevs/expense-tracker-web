@@ -2,14 +2,16 @@
 
 import { useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
+import { useCurrencyStore } from '../store/currencyStore';
 import CurrencySettingsDialog from '../components/settings/CurrencySettingsDialog';
 import QuickAmountSettings from '../components/settings/QuickAmountSettings';
-import { CURRENCY, DEFAULT_QUICK_AMOUNTS } from '../constants';
+import { DEFAULT_QUICK_AMOUNTS } from '../constants';
 
 export default function SettingsPage() {
   const [isCurrencyDialogOpen, setIsCurrencyDialogOpen] = useState(false);
   const [isQuickAmountDialogOpen, setIsQuickAmountDialogOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { settings: currencySettings } = useCurrencyStore();
 
   return (
     <div className="w-full max-w-2xl mx-auto">
@@ -26,7 +28,7 @@ export default function SettingsPage() {
               <div>
                 <h3 className="text-base font-medium text-slate-900 dark:text-white">Currency Settings</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                  Current: {CURRENCY.symbol} ({CURRENCY.code}) - {CURRENCY.position === 'before' ? 'Before amount' : 'After amount'}
+                  Current: {currencySettings.symbol} ({currencySettings.code}) - {currencySettings.position === 'before' ? 'Before amount' : 'After amount'}
                 </p>
               </div>
               <span className="text-slate-400 dark:text-slate-500">→</span>

@@ -14,7 +14,7 @@ export default function ExpensesPage() {
   // Temporary mock data - in a real app, this would come from your data source
   const allExpenses = [
     { 
-      id: 1, 
+      id: '1', 
       amount: 50.00, 
       category: 'food' as const, 
       date: '2024-03-20',

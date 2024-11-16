@@ -1,11 +1,9 @@
-import { ExpenseCategory, CurrencyPosition, QuickAmount } from "@/app/types";
+import { ExpenseCategory, CurrencySettings, QuickAmount } from '@/app/types';
 
-export const ITEMS_PER_PAGE = 5;
-
-export const CURRENCY = {
-  symbol: 'Rs.',
-  code: 'LKR',
-  position: 'after' as CurrencyPosition
+export const DEFAULT_CURRENCY_SETTINGS: CurrencySettings = {
+  symbol: '$',
+  code: 'USD',
+  position: 'before',
 };
 
 export const DEFAULT_QUICK_AMOUNTS: QuickAmount[] = [
@@ -17,18 +15,25 @@ export const DEFAULT_QUICK_AMOUNTS: QuickAmount[] = [
   { id: '6', amount: 1000, enabled: true },
 ];
 
-export const CATEGORY_EMOJIS: Record<ExpenseCategory, string> = {
-  food: '🍕',
-  transport: '🚗',
-  utilities: '🏠',
-  entertainment: '🎮',
-  other: '📦'
-};
-
 export const CATEGORY_OPTIONS = [
-  { value: 'food', label: '🍕 Food' },
-  { value: 'transport', label: '🚗 Transport' },
-  { value: 'utilities', label: '🏠 Utilities' },
-  { value: 'entertainment', label: '🎮 Entertainment' },
-  { value: 'other', label: '📦 Other' }
-]; 
+  { value: 'food', label: 'Food & Dining', emoji: '🍽️' },
+  { value: 'transportation', label: 'Transportation', emoji: '🚗' },
+  { value: 'entertainment', label: 'Entertainment', emoji: '🎮' },
+  { value: 'utilities', label: 'Bills & Utilities', emoji: '📱' },
+  { value: 'shopping', label: 'Shopping', emoji: '🛍️' },
+  { value: 'healthcare', label: 'Healthcare', emoji: '🏥' },
+  { value: 'education', label: 'Education', emoji: '📚' },
+  { value: 'other', label: 'Other', emoji: '📌' },
+] as const;
+
+export const CATEGORY_EMOJIS: Record<ExpenseCategory, string> = 
+  Object.fromEntries(
+    CATEGORY_OPTIONS.map(opt => [opt.value, opt.emoji])
+  ) as Record<ExpenseCategory, string>;
+
+export const ITEMS_PER_PAGE = 10;
+
+export const DATE_FORMAT = {
+  display: 'MMM dd, yyyy',
+  input: 'yyyy-MM-dd',
+}; 

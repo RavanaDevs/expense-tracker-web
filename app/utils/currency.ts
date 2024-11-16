@@ -1,8 +1,9 @@
-import { CURRENCY } from '@/app/constants';
+import { useCurrencyStore } from '@/app/store/currencyStore';
 
 export const formatCurrency = (amount: number): string => {
+  const { settings } = useCurrencyStore.getState();
   const formattedAmount = amount.toFixed(2);
-  return CURRENCY.position === 'before' 
-    ? `${CURRENCY.symbol} ${formattedAmount}`
-    : `${formattedAmount}${CURRENCY.code}`;
+  return settings.position === 'before' 
+    ? `${settings.symbol}${formattedAmount}`
+    : `${formattedAmount}${settings.symbol}`;
 }; 

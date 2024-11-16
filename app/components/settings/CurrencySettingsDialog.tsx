@@ -2,7 +2,7 @@
 
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { CURRENCY } from '@/app/constants';
+import { useCurrencyStore } from '@/app/store/currencyStore';
 import { CurrencyPosition } from '@/app/types';
 
 interface CurrencySettingsDialogProps {
@@ -11,16 +11,16 @@ interface CurrencySettingsDialogProps {
 }
 
 export default function CurrencySettingsDialog({ isOpen, onClose }: CurrencySettingsDialogProps) {
+  const { settings: currencySettings, updateSettings } = useCurrencyStore();
   const [settings, setSettings] = useState({
-    symbol: CURRENCY.symbol,
-    code: CURRENCY.code,
-    position: CURRENCY.position,
+    symbol: currencySettings.symbol,
+    code: currencySettings.code,
+    position: currencySettings.position,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Update currency settings in your app state/storage
-    console.log('New currency settings:', settings);
+    updateSettings(settings);
     onClose();
   };
 

@@ -1,25 +1,29 @@
-export interface Expense {
-  id: number;
-  amount: number;
-  category: ExpenseCategory;
-  date: string;
-  description?: string;
-}
+export type Theme = 'light' | 'dark';
 
-export type ExpenseCategory = 'food' | 'transport' | 'utilities' | 'entertainment' | 'other';
+export type CurrencyPosition = 'before' | 'after';
+
+export type ExpenseCategory = 
+  | 'food' 
+  | 'transportation' 
+  | 'entertainment' 
+  | 'utilities' 
+  | 'shopping' 
+  | 'healthcare' 
+  | 'education' 
+  | 'other';
 
 export interface DateRange {
   startDate: string;
   endDate: string;
 }
 
-export interface PaginationInfo {
-  currentPage: number;
-  totalPages: number;
-  itemsPerPage: number;
+export interface Expense {
+  id: string;
+  amount: number;
+  category: ExpenseCategory;
+  date: string;
+  description?: string;
 }
-
-export type CurrencyPosition = 'before' | 'after';
 
 export interface QuickAmount {
   id: string;
@@ -27,11 +31,22 @@ export interface QuickAmount {
   enabled: boolean;
 }
 
-export interface Settings {
-  currency: {
-    symbol: string;
-    code: string;
-    position: CurrencyPosition;
-  };
+export interface CurrencySettings {
+  symbol: string;
+  code: string;
+  position: CurrencyPosition;
+}
+
+export interface UserSettings {
+  currency: CurrencySettings;
   quickAmounts: QuickAmount[];
+  theme: Theme;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatarInitials: string;
+  settings: UserSettings;
 } 
