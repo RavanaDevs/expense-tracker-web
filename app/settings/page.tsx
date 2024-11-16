@@ -3,10 +3,12 @@
 import { useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 import CurrencySettingsDialog from '../components/settings/CurrencySettingsDialog';
-import { CURRENCY } from '../constants';
+import QuickAmountSettings from '../components/settings/QuickAmountSettings';
+import { CURRENCY, DEFAULT_QUICK_AMOUNTS } from '../constants';
 
 export default function SettingsPage() {
   const [isCurrencyDialogOpen, setIsCurrencyDialogOpen] = useState(false);
+  const [isQuickAmountDialogOpen, setIsQuickAmountDialogOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -25,6 +27,22 @@ export default function SettingsPage() {
                 <h3 className="text-base font-medium text-slate-900 dark:text-white">Currency Settings</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
                   Current: {CURRENCY.symbol} ({CURRENCY.code}) - {CURRENCY.position === 'before' ? 'Before amount' : 'After amount'}
+                </p>
+              </div>
+              <span className="text-slate-400 dark:text-slate-500">→</span>
+            </div>
+          </div>
+
+          {/* Quick Amount Settings */}
+          <div 
+            className="p-4 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors cursor-pointer"
+            onClick={() => setIsQuickAmountDialogOpen(true)}
+          >
+            <div className="flex justify-between items-center">
+              <div>
+                <h3 className="text-base font-medium text-slate-900 dark:text-white">Quick Amount Settings</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                  Customize quick add amounts ({DEFAULT_QUICK_AMOUNTS.filter(a => a.enabled).length} enabled)
                 </p>
               </div>
               <span className="text-slate-400 dark:text-slate-500">→</span>
@@ -52,10 +70,26 @@ export default function SettingsPage() {
         </div>
       </div>
 
+      {/* Dialogs */}
       <CurrencySettingsDialog
         isOpen={isCurrencyDialogOpen}
         onClose={() => setIsCurrencyDialogOpen(false)}
       />
+
+      {isQuickAmountDialogOpen && (
+        <div className="fixed inset-0 z-50 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4">
+            <div className="fixed inset-0 bg-black bg-opacity-25 dark:bg-opacity-50" onClick={() => setIsQuickAmountDialogOpen(false)} />
+            <div className="relative bg-white dark:bg-slate-800 rounded-lg shadow-xl max-w-md w-full p-6">
+              <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-4">Quick Amount Settings</h3>
+              <QuickAmountSettings
+                isOpen={isQuickAmountDialogOpen}
+                onClose={() => setIsQuickAmountDialogOpen(false)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 } 

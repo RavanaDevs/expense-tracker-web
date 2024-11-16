@@ -1,4 +1,4 @@
-import { ExpenseCategory, CurrencyPosition } from "@/app/types";
+import { ExpenseCategory, CurrencyPosition, QuickAmount } from "@/app/types";
 
 export const ITEMS_PER_PAGE = 5;
 
@@ -7,6 +7,15 @@ export const CURRENCY = {
   code: 'LKR',
   position: 'after' as CurrencyPosition
 };
+
+export const DEFAULT_QUICK_AMOUNTS: QuickAmount[] = [
+  { id: '1', amount: 10, enabled: true },
+  { id: '2', amount: 20, enabled: true },
+  { id: '3', amount: 50, enabled: true },
+  { id: '4', amount: 100, enabled: true },
+  { id: '5', amount: 500, enabled: true },
+  { id: '6', amount: 1000, enabled: true },
+];
 
 export const CATEGORY_EMOJIS: Record<ExpenseCategory, string> = {
   food: '🍕',

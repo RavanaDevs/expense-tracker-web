@@ -78,45 +78,40 @@ export default function ExpenseDialog({ isOpen, closeDialog, expense, onSave }: 
 
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                       Amount
                     </label>
-                    <div className="relative rounded-md shadow-sm">
-                      {renderCurrencySymbol('before')}
-                      <input
-                        type="number"
-                        value={editedExpense.amount}
-                        onChange={(e) => setEditedExpense({ ...editedExpense, amount: parseFloat(e.target.value) })}
-                        className={`block w-full rounded-md border-0 py-1.5 text-slate-900 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-slate-800 sm:text-sm sm:leading-6
-                          ${CURRENCY.position === 'before' ? 'pl-7' : 'pr-7'}`}
-                        step="0.01"
-                        required
-                      />
-                      {renderCurrencySymbol('after')}
-                    </div>
+                    <input
+                      type="number"
+                      value={editedExpense.amount}
+                      onChange={(e) => setEditedExpense({ ...editedExpense, amount: parseFloat(e.target.value) })}
+                      className="block w-full px-4 py-2.5 rounded-md border-0 text-slate-900 dark:text-white bg-white dark:bg-slate-700 ring-1 ring-inset ring-slate-200 dark:ring-slate-600 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400"
+                      step="0.01"
+                      required
+                    />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                       Date
                     </label>
                     <input
                       type="date"
                       value={editedExpense.date}
                       onChange={(e) => setEditedExpense({ ...editedExpense, date: e.target.value })}
-                      className="block w-full rounded-md border-0 py-1.5 text-slate-900 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-slate-800 sm:text-sm sm:leading-6"
+                      className="block w-full px-4 py-2.5 rounded-md border-0 text-slate-900 dark:text-white bg-white dark:bg-slate-700 ring-1 ring-inset ring-slate-200 dark:ring-slate-600 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                       Description
                     </label>
                     <textarea
                       value={editedExpense.description}
                       onChange={(e) => setEditedExpense({ ...editedExpense, description: e.target.value })}
-                      className="block w-full rounded-md border-0 py-1.5 text-slate-900 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-slate-800 sm:text-sm sm:leading-6"
+                      className="block w-full px-4 py-2.5 rounded-md border-0 text-slate-900 dark:text-white bg-white dark:bg-slate-700 ring-1 ring-inset ring-slate-200 dark:ring-slate-600 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400"
                       rows={3}
                       placeholder="Add a description..."
                     />

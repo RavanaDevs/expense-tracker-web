@@ -36,7 +36,7 @@ export default function CurrencySettingsDialog({ isOpen, onClose }: CurrencySett
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
+          <div className="fixed inset-0 bg-black bg-opacity-25 dark:bg-opacity-50" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -50,56 +50,56 @@ export default function CurrencySettingsDialog({ isOpen, onClose }: CurrencySett
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="div"
-                  className="bg-slate-50 px-6 py-4 border-b border-slate-200"
+                  className="bg-slate-50 dark:bg-slate-700 px-6 py-4 border-b border-slate-200 dark:border-slate-600"
                 >
-                  <h3 className="text-lg font-medium text-slate-900">
+                  <h3 className="text-lg font-medium text-slate-900 dark:text-white">
                     Currency Settings
                   </h3>
                 </Dialog.Title>
 
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                       Currency Symbol
                     </label>
                     <input
                       type="text"
                       value={settings.symbol}
                       onChange={(e) => setSettings({ ...settings, symbol: e.target.value })}
-                      className="block w-full rounded-md border-0 py-1.5 px-3 text-slate-900 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-slate-800 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-2.5 px-4 text-slate-900 dark:text-white bg-white dark:bg-slate-700 ring-1 ring-inset ring-slate-200 dark:ring-slate-600 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400"
                       placeholder="$, €, ¥"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                       Currency Code
                     </label>
                     <input
                       type="text"
                       value={settings.code}
                       onChange={(e) => setSettings({ ...settings, code: e.target.value })}
-                      className="block w-full rounded-md border-0 py-1.5 px-3 text-slate-900 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-slate-800 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-2.5 px-4 text-slate-900 dark:text-white bg-white dark:bg-slate-700 ring-1 ring-inset ring-slate-200 dark:ring-slate-600 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400"
                       placeholder="USD, EUR, JPY"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                       Symbol Position
                     </label>
                     <select
                       value={settings.position}
                       onChange={(e) => setSettings({ ...settings, position: e.target.value as CurrencyPosition })}
-                      className="block w-full rounded-md border-0 py-1.5 px-3 text-slate-900 ring-1 ring-inset ring-slate-200 focus:ring-2 focus:ring-inset focus:ring-slate-800 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-2.5 px-4 text-slate-900 dark:text-white bg-white dark:bg-slate-700 ring-1 ring-inset ring-slate-200 dark:ring-slate-600 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400"
                     >
-                      <option value="before">Before amount ($100)</option>
-                      <option value="after">After amount (100$)</option>
+                      <option value="before" className="dark:bg-slate-700">Before amount ($100)</option>
+                      <option value="after" className="dark:bg-slate-700">After amount (100$)</option>
                     </select>
                   </div>
 
@@ -107,13 +107,13 @@ export default function CurrencySettingsDialog({ isOpen, onClose }: CurrencySett
                     <button
                       type="button"
                       onClick={onClose}
-                      className="rounded-md px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
+                      className="rounded-md px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 dark:focus-visible:ring-slate-400"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
-                      className="rounded-md bg-slate-800 px-3 py-2 text-sm font-medium text-white hover:bg-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
+                      className="rounded-md bg-slate-800 dark:bg-slate-700 px-3 py-2 text-sm font-medium text-white hover:bg-slate-700 dark:hover:bg-slate-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 dark:focus-visible:ring-slate-400"
                     >
                       Save Changes
                     </button>

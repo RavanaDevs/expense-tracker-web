@@ -19,4 +19,19 @@ export interface PaginationInfo {
   itemsPerPage: number;
 }
 
-export type CurrencyPosition = 'before' | 'after'; 
+export type CurrencyPosition = 'before' | 'after';
+
+export interface QuickAmount {
+  id: string;
+  amount: number;
+  enabled: boolean;
+}
+
+export interface Settings {
+  currency: {
+    symbol: string;
+    code: string;
+    position: CurrencyPosition;
+  };
+  quickAmounts: QuickAmount[];
+} 
