@@ -47,7 +47,7 @@ export default function ExpenseDialog({ isOpen, closeDialog, expense, onSave }: 
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
+          <div className="fixed inset-0 bg-black bg-opacity-25 dark:bg-opacity-50" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -61,16 +61,16 @@ export default function ExpenseDialog({ isOpen, closeDialog, expense, onSave }: 
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white text-left align-middle shadow-xl transition-all">
-                <div className="bg-slate-50 px-6 py-4 border-b border-slate-200">
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 text-left align-middle shadow-xl transition-all">
+                <div className="bg-slate-50 dark:bg-slate-700 px-6 py-4 border-b border-slate-200 dark:border-slate-600">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <span className="text-2xl">{CATEGORY_EMOJIS[editedExpense.category]}</span>
-                      <Dialog.Title as="h3" className="text-lg font-medium text-slate-900 capitalize">
+                      <Dialog.Title as="h3" className="text-lg font-medium text-slate-900 dark:text-white capitalize">
                         {editedExpense.category}
                       </Dialog.Title>
                     </div>
-                    <span className="text-sm text-slate-500">
+                    <span className="text-sm text-slate-500 dark:text-slate-400">
                       {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
@@ -126,13 +126,13 @@ export default function ExpenseDialog({ isOpen, closeDialog, expense, onSave }: 
                     <button
                       type="button"
                       onClick={closeDialog}
-                      className="rounded-md px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
+                      className="rounded-md px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
-                      className="rounded-md bg-slate-800 px-3 py-2 text-sm font-medium text-white hover:bg-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
+                      className="rounded-md bg-slate-800 dark:bg-slate-700 px-3 py-2 text-sm font-medium text-white hover:bg-slate-700 dark:hover:bg-slate-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
                     >
                       Save Changes
                     </button>
