@@ -1,7 +1,7 @@
-import { Expense } from "@/app/types";
-import { CATEGORY_EMOJIS } from "@/app/constants";
-import { formatDate } from "@/app/utils/date";
-import { formatCurrency } from "@/app/utils/currency";
+import { Expense } from "@/types";
+import { CATEGORY_EMOJIS } from '@/constants/index';
+import { formatDate } from "@/utils/date";
+import { formatCurrency } from "@/utils/currency";
 
 interface ExpenseCardProps {
   expense: Expense;

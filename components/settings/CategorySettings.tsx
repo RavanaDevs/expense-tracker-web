@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { Category } from '@/app/types';
-import { useStore } from '@/app/store/useStore';
-import { DATE_FORMAT } from '@/app/constants/index';
-import { DEFAULT_CATEGORIES } from '@/app/constants/index';
+import { Category } from '@/types';
+import { useStore } from '@/store/useStore';
+import { DATE_FORMAT } from '@/constants/index';
+import { DEFAULT_CATEGORIES } from '@/constants/index';
 
 interface CategorySettingsProps {
   isOpen: boolean;
@@ -21,8 +21,8 @@ export default function CategorySettings({ isOpen, onClose }: CategorySettingsPr
   });
 
   const handleToggle = (id: string) => {
-    setCategories(prev => 
-      prev.map(category => 
+    setCategories(prev =>
+      prev.map(category =>
         category.id === id ? { ...category, enabled: !category.enabled } : category
       )
     );
@@ -32,7 +32,7 @@ export default function CategorySettings({ isOpen, onClose }: CategorySettingsPr
     if (newCategory.label.trim()) {
       const newId = (Math.max(...categories.map(c => parseInt(c.id))) + 1).toString();
       const value = newCategory.label.toLowerCase().replace(/\s+/g, '_');
-      
+
       setCategories(prev => [...prev, {
         id: newId,
         value,
@@ -40,7 +40,7 @@ export default function CategorySettings({ isOpen, onClose }: CategorySettingsPr
         emoji: newCategory.emoji,
         enabled: true
       }]);
-      
+
       setNewCategory({ label: '', emoji: '📌' });
     }
   };
@@ -49,7 +49,7 @@ export default function CategorySettings({ isOpen, onClose }: CategorySettingsPr
     // Prevent removing if it's the last enabled category
     const enabledCount = categories.filter(c => c.enabled).length;
     const category = categories.find(c => c.id === id);
-    
+
     if (enabledCount === 1 && category?.enabled) {
       alert('You must have at least one enabled category');
       return;

@@ -1,4 +1,4 @@
-import { Expense, DateRange, ExpenseCategory } from "@/app/types";
+import { Expense, DateRange, ExpenseCategory } from "@/types";
 
 export const filterExpensesByDateRange = (expenses: Expense[], dateRange: DateRange) => {
   return expenses.filter(expense => 

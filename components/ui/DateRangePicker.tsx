@@ -1,6 +1,6 @@
 'use client';
 
-import { DateRange } from "@/app/types";
+import { DateRange } from "@/types";
 
 interface DateRangePickerProps {
   dateRange: DateRange;

@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { useStore } from '@/app/store/useStore';
-import { useCurrencyStore } from '@/app/store/currencyStore';
-import { CATEGORY_OPTIONS } from "@/app/constants/index"
-import { CurrencyPosition, ExpenseCategory } from '@/app/types';
+import { useStore } from '@/store/useStore';
+import { useCurrencyStore } from '@/store/currencyStore';
+import { CATEGORY_OPTIONS } from "@/constants/index"
+import { CurrencyPosition, ExpenseCategory, QuickAmount } from '@/types';
 
 export default function ExpenseForm() {
   const settings = useStore((state) => state.settings);
@@ -17,9 +17,9 @@ export default function ExpenseForm() {
   });
 
   const enabledQuickAmounts = settings.quickAmounts
-    ?.filter(qa => qa.enabled)
-    .map(qa => qa.amount)
-    .sort((a, b) => a - b) || [];
+    ?.filter((qa: QuickAmount) => qa.enabled)
+    .map((qa: QuickAmount) => qa.amount)
+    .sort((a: number, b: number) => a - b) || [];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,7 +72,7 @@ export default function ExpenseForm() {
         {/* Quick Add Buttons */}
         {enabledQuickAmounts.length > 0 && (
           <div className="mt-3 grid grid-cols-3 sm:flex sm:justify-end gap-2">
-            {enabledQuickAmounts.map((amount) => (
+            {enabledQuickAmounts.map((amount: number) => (
               <button
                 key={amount}
                 type="button"

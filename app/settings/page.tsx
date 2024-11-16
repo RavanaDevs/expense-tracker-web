@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useTheme } from '../contexts/ThemeContext';
-import { useCurrencyStore } from '../store/currencyStore';
-import { useStore } from '../store/useStore';
-import CurrencySettingsDialog from '../components/settings/CurrencySettingsDialog';
-import QuickAmountSettings from '../components/settings/QuickAmountSettings';
-import CategorySettings from '../components/settings/CategorySettings';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useCurrencyStore } from '@/store/currencyStore';
+import { useStore } from '@/store/useStore';
+import CurrencySettingsDialog from '@/components/settings/CurrencySettingsDialog';
+import QuickAmountSettings from '@/components/settings/QuickAmountSettings';
+import CategorySettings from '@/components/settings/CategorySettings';
 
 export default function SettingsPage() {
   const [isCurrencyDialogOpen, setIsCurrencyDialogOpen] = useState(false);
@@ -47,7 +47,7 @@ export default function SettingsPage() {
               <div>
                 <h3 className="text-base font-medium text-slate-900 dark:text-white">Quick Amount Settings</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                  Customize quick add amounts ({settings.quickAmounts?.filter(a => a.enabled).length || 0} enabled)
+                  Customize quick add amounts ({settings.quickAmounts?.filter((a: { enabled: boolean }) => a.enabled).length || 0} enabled)
                 </p>
               </div>
               <span className="text-slate-400 dark:text-slate-500">→</span>
@@ -82,7 +82,7 @@ export default function SettingsPage() {
               <div>
                 <h3 className="text-base font-medium text-slate-900 dark:text-white">Category Settings</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                  Customize expense categories ({settings.categories?.filter(c => c.enabled).length || 0} enabled)
+                  Customize expense categories ({settings.categories?.filter((c: { enabled: boolean }) => c.enabled).length || 0} enabled)
                 </p>
               </div>
               <span className="text-slate-400 dark:text-slate-500">→</span>

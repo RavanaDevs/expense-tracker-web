@@ -2,10 +2,10 @@
 
 import { useState, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { CATEGORY_EMOJIS } from '@/app/constants';
-import { formatCurrency } from '@/app/utils/currency';
-import { useCurrencyStore } from '@/app/store/currencyStore';
-import { Expense, CurrencyPosition } from '@/app/types';
+import { CATEGORY_EMOJIS } from '@/constants/index';
+import { formatCurrency } from '@/utils/currency';
+import { useCurrencyStore } from '@/store/currencyStore';
+import { Expense, CurrencyPosition } from '@/types';
 
 interface ExpenseDialogProps {
   isOpen: boolean;

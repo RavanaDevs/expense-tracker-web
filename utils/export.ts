@@ -1,4 +1,4 @@
-import { Expense } from "@/app/types";
+import { Expense } from "@/types";
 import { formatDate } from "./date";
 import { formatCurrency } from "./currency";
 

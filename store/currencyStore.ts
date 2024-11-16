@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { CurrencySettings } from '@/app/types';
-import { DEFAULT_CURRENCY_SETTINGS } from '@/app/constants';
+import { CurrencySettings } from '@/types';
+import { DEFAULT_CURRENCY_SETTINGS } from '@/constants/index';
 
 interface CurrencyStore {
   settings: CurrencySettings;

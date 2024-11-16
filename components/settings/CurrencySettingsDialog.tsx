@@ -2,8 +2,8 @@
 
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { useCurrencyStore } from '@/app/store/currencyStore';
-import { CurrencyPosition } from '@/app/types';
+import { useCurrencyStore } from '@/store/currencyStore';
+import { CurrencyPosition } from '@/types';
 
 interface CurrencySettingsDialogProps {
   isOpen: boolean;

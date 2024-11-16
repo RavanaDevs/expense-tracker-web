@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Expense, UserSettings, DateRange } from '@/app/types';
-import { DEFAULT_CURRENCY_SETTINGS, DEFAULT_QUICK_AMOUNTS, DEFAULT_CATEGORIES } from '@/app/constants';
+import { Expense, UserSettings, DateRange } from '@/types';
+import { DEFAULT_CURRENCY_SETTINGS, DEFAULT_QUICK_AMOUNTS, DEFAULT_CATEGORIES } from '@/constants/index';
 
 // Helper function to create sample expenses
 const createSampleExpenses = (): Expense[] => {

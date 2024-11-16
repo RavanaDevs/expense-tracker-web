@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/app/utils/currency';
+import { formatCurrency } from '@/utils/currency';
 
 interface ExpenseStatsProps {
   dateRange: {

@@ -1,4 +1,4 @@
-import { Expense, DateRange, UserSettings, User } from '@/app/types';
+import { Expense, DateRange, UserSettings, User } from '@/types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
 

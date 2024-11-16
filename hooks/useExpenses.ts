@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
-import { Expense, DateRange } from '@/app/types';
-import { expenseService } from '@/app/services/api';
+import { Expense, DateRange } from '@/types';
+import { expenseService } from '@/services/api';
 import { useToast } from './useToast';
 
 export function useExpenses(initialDateRange: DateRange) {

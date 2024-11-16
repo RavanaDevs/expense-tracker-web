@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { QuickAmount } from '@/app/types';
-import { DEFAULT_QUICK_AMOUNTS } from '@/app/constants';
-import { formatCurrency } from '@/app/utils/currency';
+import { QuickAmount } from '@/types';
+import { DEFAULT_QUICK_AMOUNTS } from '@/constants/index';
+import { formatCurrency } from '@/utils/currency';
 
 interface QuickAmountSettingsProps {
   isOpen: boolean;

@@ -4,9 +4,9 @@ import { useState } from 'react';
 import ExpenseDialog from './ExpenseDialog';
 import Pagination from './Pagination';
 import ExpenseCard from './expenses/ExpenseCard';
-import { useExpenses } from '@/app/store/selectors';
-import { ITEMS_PER_PAGE } from '@/app/constants';
-import { Expense } from '@/app/types';
+import { useExpenses } from '@/store/selectors';
+import { ITEMS_PER_PAGE } from '@/constants/index';
+import { Expense } from '@/types';
 
 interface ExpenseListProps {
   dateRange: {

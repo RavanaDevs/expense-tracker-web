@@ -1,4 +1,4 @@
-import { ExpenseCategory, CurrencySettings, QuickAmount, Category } from '@/app/types';
+import { ExpenseCategory, CurrencySettings, QuickAmount, Category } from '@/types';
 
 export const DEFAULT_CURRENCY_SETTINGS: CurrencySettings = {
   symbol: '$',

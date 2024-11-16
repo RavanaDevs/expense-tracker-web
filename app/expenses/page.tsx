@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import ExpenseList from '../components/ExpenseList';
-import ExpenseStats from '../components/ExpenseStats';
-import { exportToCSV } from '../utils/export';
+import ExpenseList from "@/components/ExpenseList";
+import ExpenseStats from '@/components/ExpenseStats';
+import { exportToCSV } from '@/utils/export';
 
 export default function ExpensesPage() {
   const [dateRange, setDateRange] = useState({
@@ -13,10 +13,10 @@ export default function ExpensesPage() {
 
   // Temporary mock data - in a real app, this would come from your data source
   const allExpenses = [
-    { 
-      id: '1', 
-      amount: 50.00, 
-      category: 'food' as const, 
+    {
+      id: '1',
+      amount: 50.00,
+      category: 'food' as const,
       date: '2024-03-20',
       description: 'Lunch with colleagues'
     },
@@ -24,7 +24,7 @@ export default function ExpensesPage() {
   ];
 
   const handleExport = () => {
-    const filteredExpenses = allExpenses.filter(expense => 
+    const filteredExpenses = allExpenses.filter(expense =>
       expense.date >= dateRange.startDate && expense.date <= dateRange.endDate
     );
     exportToCSV(filteredExpenses);

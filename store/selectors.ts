@@ -1,5 +1,5 @@
 import { useStore } from './useStore';
-import { CurrencySettings, DateRange, QuickAmount } from '@/app/types';
+import { CurrencySettings, DateRange, QuickAmount } from '@/types';
 
 export const useExpenses = () => {
     const store = useStore();

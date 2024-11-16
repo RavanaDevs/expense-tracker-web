@@ -1,4 +1,4 @@
-import { useCurrencyStore } from '@/app/store/currencyStore';
+import { useCurrencyStore } from '@/store/currencyStore';
 
 export const formatCurrency = (amount: number): string => {
   const { settings } = useCurrencyStore.getState();
