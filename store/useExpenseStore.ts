@@ -4,6 +4,7 @@ import { expenseService } from "@/services/expenses";
 
 interface ExpenseStore {
   expenses: Expense[];
+  selectedExpense: Expense | null;
   isLoading: boolean;
   error: string | null;
   preferences: {
@@ -11,15 +12,21 @@ interface ExpenseStore {
   };
 
   setExpenses: (expenses: Expense[]) => void;
+  setSelectedExpense: (selectedExpense: Expense | null) => void;
   setError: (error: string | null) => void;
   setLoading: (loading: boolean) => void;
   fetchExpensesByDate: (date: string) => Promise<void>;
+  fetchExpensesByDateRange: (
+    startDate: string,
+    endDate: string
+  ) => Promise<void>;
   updateExpense: (id: string, updatedExpense: Expense) => Promise<Expense>;
   addExpense: (expense: Expense) => Promise<Expense>;
 }
 
 export const useExpenseStore = create<ExpenseStore>((set) => ({
   expenses: [],
+  selectedExpense: null,
   isLoading: false,
   error: null,
   preferences: {
@@ -27,6 +34,7 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
   },
 
   setExpenses: (expenses) => set({ expenses }),
+  setSelectedExpense: (selectedExpense) => set({ selectedExpense }),
   setError: (error) => set({ error }),
   setLoading: (isLoading) => set({ isLoading }),
 
@@ -34,6 +42,16 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
     set({ isLoading: true, error: null });
     try {
       const expenses = await expenseService.getByDate(date);
+      set({ expenses, isLoading: false });
+    } catch (error) {
+      set({ error: "Failed to fetch expenses", isLoading: false });
+      console.error("Error fetching expenses:", error);
+    }
+  },
+  fetchExpensesByDateRange: async (startDate: string, endDate: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      const expenses = await expenseService.getByDateRange(startDate, endDate);
       set({ expenses, isLoading: false });
     } catch (error) {
       set({ error: "Failed to fetch expenses", isLoading: false });
@@ -52,7 +70,7 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
 
       set((state) => ({
         expenses: state.expenses.map((expense) =>
-          expense._id === id ? updated : expense
+          expense._id === expenseToUpdate._id ? updated : expense
         ),
       }));
       return updated;

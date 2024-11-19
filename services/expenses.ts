@@ -3,8 +3,18 @@ import { Expense } from "@/types";
 
 export const expenseService = {
   async getByDate(date: string) {
-    console.log(date);
     const response = await api.get<Expense[]>(`/expenses/date/${date}`);
+    console.log(response);
+    return response.data;
+  },
+
+  async getByDateRange(startDate: string, endDate: string) {
+    const response = await api.get<Expense[]>(`/expenses/all`, {
+      params: {
+        startDate: startDate,
+        endDate: endDate,
+      },
+    });
     console.log(response);
     return response.data;
   },

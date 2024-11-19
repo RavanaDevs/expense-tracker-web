@@ -12,27 +12,14 @@ import { useDateRangeStore } from "@/store/dateRangeStore";
 import { dateAsIsoString } from "@/utils/date";
 
 export default function ExpenseList() {
-  const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { fetchExpensesByDate, updateExpense } = useExpenseStore();
+  const { updateExpense, setSelectedExpense, selectedExpense } =
+    useExpenseStore();
   const { expenses, isLoading, error } = useExpenses();
-  const { startDate, endDate } = useDateRangeStore();
 
-  useEffect(() => {
-    if (startDate) {
-      if (endDate) {
-        console.log("range", startDate, endDate);
-        return;
-      }
-      console.log("single date", startDate, endDate);
-      fetchExpensesByDate(dateAsIsoString(startDate));
-    } else {
-      console.log("today", startDate, endDate);
-      fetchExpensesByDate(dateAsIsoString(new Date()));
-    }
-  }, [fetchExpensesByDate, startDate, endDate]);
+  useEffect(() => {}, [expenses]);
 
   if (isLoading) {
     return <div className="text-center py-8">Loading expenses...</div>;
@@ -89,7 +76,7 @@ export default function ExpenseList() {
       {selectedExpense && (
         <ExpenseDialog
           isOpen={isDialogOpen}
-          closeDialog={() => setIsDialogOpen(false)}
+          closeDialog={() => {setIsDialogOpen(false); setSelectedExpense(null)}}
           expense={selectedExpense}
           onSave={handleSaveExpense}
         />

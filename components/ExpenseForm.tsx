@@ -8,7 +8,7 @@ import { CurrencyPosition, ExpenseCategory, QuickAmount } from "@/types";
 
 export default function ExpenseForm() {
   const preferences = useExpenseStore((state) => state.preferences);
-  const addExpense = useExpenseStore((state) => state.addExpense);
+  const { addExpense } = useExpenseStore();
   const { settings: currencySettings } = useCurrencyStore();
 
   const [expense, setExpense] = useState({

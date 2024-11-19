@@ -6,20 +6,31 @@ import ExpenseStats from "@/components/ExpenseStats";
 import { exportToCSV } from "@/utils/export";
 import { useExpenseStore } from "@/store/useExpenseStore";
 import { useDateRangeStore } from "@/store/dateRangeStore";
-import { dateAsInput } from "@/utils/date";
+import { dateAsInput, dateAsIsoString } from "@/utils/date";
 
 export default function ExpensesPage() {
   const { setStartDate, setEndDate, startDate, endDate } = useDateRangeStore();
+  const { fetchExpensesByDate, fetchExpensesByDateRange, expenses } =
+    useExpenseStore();
 
   const handleStartDateChange = (date: string) => {
     setStartDate(new Date(date));
+    fetchExpensesByDate(dateAsIsoString(new Date(date)));
   };
   const handleEndDateChange = (date: string) => {
     setEndDate(new Date(date));
+    fetchExpensesByDateRange(
+      dateAsIsoString(startDate!),
+      dateAsIsoString(new Date(date))
+    );
   };
 
+  useEffect(() => {
+    fetchExpensesByDate(dateAsIsoString(new Date()));
+  }, []);
+
   const handleExport = () => {
-    console.log(startDate, endDate);
+    console.log(expenses);
   };
 
   return (
