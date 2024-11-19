@@ -7,7 +7,6 @@ import ExpenseCard from "./expenses/ExpenseCard";
 import { useExpenseStore } from "@/store/useStore";
 import { ITEMS_PER_PAGE } from "@/constants/index";
 import { Expense } from "@/types";
-import axios from "axios";
 
 interface ExpenseListProps {
   dateRange: {
@@ -21,46 +20,13 @@ export default function ExpenseList({ dateRange }: ExpenseListProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const {
-    expenses,
-    setExpenses,
-    isLoading,
-    setLoading,
-    error,
-    setError,
-    updateExpense,
-  } = useExpenseStore();
-
-  const fetchTodayExpenses = async () => {
-    try {
-      const today = new Date().toISOString();
-
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzNhZDY1YmQ0ZmIyMTczYjEwNTUyZGMiLCJpYXQiOjE3MzE5OTUwOTYsImV4cCI6MTczMjA4MTQ5Nn0.DHNP9dDWOFElJvtH1-uu37oA8ux_6u4iWKI7IocCiN8",
-        },
-      };
-
-      const resposne = await axios.get(
-        `http://localhost:5000/expenses/date/${today}`,
-        config
-      );
-
-      console.log(resposne.data);
-      setExpenses(resposne.data);
-    } catch (err) {
-      console.log(err);
-      setError("Error while fetchin the data");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { expenses, isLoading, error, fetchExpensesByDate, updateExpense } =
+    useExpenseStore();
 
   useEffect(() => {
-    fetchTodayExpenses();
-  }, []);
+    const today = new Date().toISOString();
+    fetchExpensesByDate(today);
+  }, [fetchExpensesByDate]);
 
   if (isLoading) {
     return <div className="text-center py-8">Loading expenses...</div>;

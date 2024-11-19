@@ -1,62 +1,75 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import { Expense, UserSettings, DateRange, QuickAmount } from "@/types";
-import {
-  DEFAULT_CURRENCY_SETTINGS,
-  DEFAULT_QUICK_AMOUNTS,
-  DEFAULT_CATEGORIES,
-} from "@/constants/index";
-import axios from "axios";
+import { Expense, QuickAmount } from "@/types";
+import { DEFAULT_QUICK_AMOUNTS } from "@/constants/index";
+import { expenseService } from "@/services/expenses";
 
 interface ExpenseStore {
-  preferences: {
-    quickAmounts: QuickAmount[];
-    // ... other preference properties ...
-  };
+  // State
   expenses: Expense[];
-  setExpenses: (expenses: Expense[]) => void;
   isLoading: boolean;
   error: string | null;
-  setError: (err: string) => void;
+  preferences: {
+    quickAmounts: QuickAmount[];
+  };
+
+  // Actions
+  setExpenses: (expenses: Expense[]) => void;
+  setError: (error: string | null) => void;
   setLoading: (loading: boolean) => void;
-  updateExpense: (id: string, updatedExpense: Expense) => void;
-  addExpense: (expense: Expense) => void;
+  fetchExpensesByDate: (date: string) => Promise<void>;
+  updateExpense: (id: string, updatedExpense: Expense) => Promise<void>;
+  addExpense: (expense: Expense) => Promise<void>;
 }
 
-export const useExpenseStore = create<ExpenseStore>((set) => ({
-  preferences: {
-    quickAmounts: DEFAULT_QUICK_AMOUNTS,
-  },
+export const useExpenseStore = create<ExpenseStore>((set, get) => ({
+  // Initial state
   expenses: [],
   isLoading: false,
   error: null,
+  preferences: {
+    quickAmounts: DEFAULT_QUICK_AMOUNTS,
+  },
+
+  // Setters
+  setExpenses: (expenses) => set({ expenses }),
   setError: (error) => set({ error }),
   setLoading: (isLoading) => set({ isLoading }),
-  setExpenses: (expenses) => set({ expenses }),
-  updateExpense: (id, updatedExpense) => {
-    set((state) => ({
-      expenses: state.expenses.map((expense) =>
-        expense.id === id ? updatedExpense : expense
-      ),
-    }));
-  },
-  addExpense: (expense) =>
-    set((state) => ({
-      expenses: [...state.expenses, expense],
-    })),
-}));
 
-// fetchTodayExpenses: async () => {
-//   set({ isLoading: true, error: null });
-//   try {
-//     console.log("trying")
-//     const today = new Date().toISOString();
-//     const response = await axios.get(
-//       `http://localhost:5000/expense/date/${today}`
-//     );
-//     console.log(response);
-//     set({ expenses: response.data, isLoading: false });
-//   } catch (error) {
-//     set({ error: "Failed to fetch expenses", isLoading: false });
-//   }
-// },
+  // Async actions
+  fetchExpensesByDate: async (date: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      const expenses = await expenseService.getByDate(date);
+      set({ expenses, isLoading: false });
+    } catch (error) {
+      set({ error: 'Failed to fetch expenses', isLoading: false });
+      console.error('Error fetching expenses:', error);
+    }
+  },
+
+  updateExpense: async (id: string, updatedExpense: Expense) => {
+    try {
+      const updated = await expenseService.updateExpense(id, updatedExpense);
+      set((state) => ({
+        expenses: state.expenses.map((expense) =>
+          expense._id === id ? updated : expense
+        ),
+      }));
+    } catch (error) {
+      set({ error: 'Failed to update expense' });
+      console.error('Error updating expense:', error);
+    }
+  },
+
+  addExpense: async (expense: Expense) => {
+    try {
+      const newExpense = await expenseService.createExpense(expense);
+      set((state) => ({
+        expenses: [...state.expenses, newExpense],
+      }));
+    } catch (error) {
+      set({ error: 'Failed to add expense' });
+      console.error('Error adding expense:', error);
+    }
+  },
+}));
