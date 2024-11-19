@@ -18,9 +18,9 @@ export default function ExpenseForm() {
 
   const enabledQuickAmounts =
     preferences.quickAmounts
-      ?.filter((qa: QuickAmount) => qa.enabled)
-      .map((qa: QuickAmount) => qa.amount)
-      .sort((a: number, b: number) => a - b) || [];
+      ?.filter((qa) => qa.enabled)
+      .map((qa) => qa.amount)
+      .sort((a, b) => a - b) || [];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

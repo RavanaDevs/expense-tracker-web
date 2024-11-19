@@ -1,13 +1,7 @@
 import { formatCurrency } from '@/utils/currency';
 
-interface ExpenseStatsProps {
-  dateRange: {
-    startDate: string;
-    endDate: string;
-  };
-}
 
-export default function ExpenseStats({ dateRange }: ExpenseStatsProps) {
+export default function ExpenseStats() {
   const calculateStats = () => {
     return {
       total: 97.50,

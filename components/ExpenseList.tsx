@@ -5,28 +5,34 @@ import ExpenseDialog from "./ExpenseDialog";
 import Pagination from "./Pagination";
 import ExpenseCard from "./expenses/ExpenseCard";
 import { useExpenseStore } from "@/store/useExpenseStore";
+import { useExpenses } from "@/store/selectors";
 import { ITEMS_PER_PAGE } from "@/constants/index";
 import { Expense } from "@/types";
+import { useDateRangeStore } from "@/store/dateRangeStore";
+import { dateAsIsoString } from "@/utils/date";
 
-interface ExpenseListProps {
-  dateRange: {
-    startDate: string;
-    endDate: string;
-  };
-}
-
-export default function ExpenseList({ dateRange }: ExpenseListProps) {
+export default function ExpenseList() {
   const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { expenses, isLoading, error, fetchExpensesByDate, updateExpense } =
-    useExpenseStore();
+  const { fetchExpensesByDate, updateExpense } = useExpenseStore();
+  const { expenses, isLoading, error } = useExpenses();
+  const { startDate, endDate } = useDateRangeStore();
 
   useEffect(() => {
-    const today = new Date().toISOString();
-    fetchExpensesByDate(today);
-  }, [fetchExpensesByDate,]);
+    if (startDate) {
+      if (endDate) {
+        console.log("range", startDate, endDate);
+        return;
+      }
+      console.log("single date", startDate, endDate);
+      fetchExpensesByDate(dateAsIsoString(startDate));
+    } else {
+      console.log("today", startDate, endDate);
+      fetchExpensesByDate(dateAsIsoString(new Date()));
+    }
+  }, [fetchExpensesByDate, startDate, endDate]);
 
   if (isLoading) {
     return <div className="text-center py-8">Loading expenses...</div>;

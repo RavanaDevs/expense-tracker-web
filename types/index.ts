@@ -12,19 +12,13 @@ export type ExpenseCategory =
   | "education"
   | "other";
 
-export interface MongoType {
-  _id?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  __v?: string;
-}
-
 export interface DateRange {
   startDate: string;
   endDate: string;
 }
 
-export interface Expense extends MongoType {
+export interface Expense {
+  _id?: string;
   amount: number;
   category: ExpenseCategory;
   date: string;
@@ -32,7 +26,6 @@ export interface Expense extends MongoType {
 }
 
 export interface QuickAmount {
-  id: string;
   amount: number;
   enabled: boolean;
 }
@@ -43,25 +36,8 @@ export interface CurrencySettings {
   position: CurrencyPosition;
 }
 
-export interface Category {
-  id: string;
-  value: string;
-  label: string;
-  emoji: string;
-  enabled: boolean;
-}
-
-export interface UserSettings {
+export interface Settings {
   currency: CurrencySettings;
   quickAmounts: QuickAmount[];
-  categories: Category[];
-  theme: Theme;
-}
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  avatarInitials: string;
-  settings: UserSettings;
+  dateRange: DateRange;
 }
