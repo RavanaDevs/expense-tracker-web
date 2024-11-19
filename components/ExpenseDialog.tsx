@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState, Fragment } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
-import { CATEGORY_EMOJIS } from '@/constants/index';
-import { formatCurrency } from '@/utils/currency';
-import { useCurrencyStore } from '@/store/currencyStore';
-import { Expense, CurrencyPosition } from '@/types';
+import { useState, Fragment } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { CATEGORY_EMOJIS } from "@/constants/index";
+import { formatCurrency } from "@/utils/currency";
+import { useCurrencyStore } from "@/store/currencyStore";
+import { Expense, CurrencyPosition } from "@/types";
 
 interface ExpenseDialogProps {
   isOpen: boolean;
@@ -14,11 +14,16 @@ interface ExpenseDialogProps {
   onSave: (updatedExpense: Expense) => void;
 }
 
-export default function ExpenseDialog({ isOpen, closeDialog, expense, onSave }: ExpenseDialogProps) {
+export default function ExpenseDialog({
+  isOpen,
+  closeDialog,
+  expense,
+  onSave,
+}: ExpenseDialogProps) {
   const { settings: currencySettings } = useCurrencyStore();
   const [editedExpense, setEditedExpense] = useState({
     ...expense,
-    description: expense.description || '',
+    description: expense.description || "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -29,10 +34,16 @@ export default function ExpenseDialog({ isOpen, closeDialog, expense, onSave }: 
 
   const renderCurrencySymbol = (position: CurrencyPosition) => {
     if (currencySettings.position !== position) return null;
-    
+
     return (
-      <div className={`pointer-events-none absolute inset-y-0 ${position === 'before' ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center`}>
-        <span className="text-slate-500 sm:text-sm">{currencySettings.symbol}</span>
+      <div
+        className={`pointer-events-none absolute inset-y-0 ${
+          position === "before" ? "left-0 pl-3" : "right-0 pr-3"
+        } flex items-center`}
+      >
+        <span className="text-slate-500 sm:text-sm">
+          {currencySettings.symbol}
+        </span>
       </div>
     );
   };
@@ -67,13 +78,21 @@ export default function ExpenseDialog({ isOpen, closeDialog, expense, onSave }: 
                 <div className="bg-slate-50 dark:bg-slate-700 px-6 py-4 border-b border-slate-200 dark:border-slate-600">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      <span className="text-2xl">{CATEGORY_EMOJIS[editedExpense.category]}</span>
-                      <Dialog.Title as="h3" className="text-lg font-medium text-slate-900 dark:text-white capitalize">
+                      <span className="text-2xl">
+                        {CATEGORY_EMOJIS[editedExpense.category]}
+                      </span>
+                      <Dialog.Title
+                        as="h3"
+                        className="text-lg font-medium text-slate-900 dark:text-white capitalize"
+                      >
                         {editedExpense.category}
                       </Dialog.Title>
                     </div>
                     <span className="text-sm text-slate-500 dark:text-slate-400">
-                      {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      {new Date().toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
                     </span>
                   </div>
                 </div>
@@ -86,7 +105,12 @@ export default function ExpenseDialog({ isOpen, closeDialog, expense, onSave }: 
                     <input
                       type="number"
                       value={editedExpense.amount}
-                      onChange={(e) => setEditedExpense({ ...editedExpense, amount: parseFloat(e.target.value) })}
+                      onChange={(e) =>
+                        setEditedExpense({
+                          ...editedExpense,
+                          amount: parseFloat(e.target.value),
+                        })
+                      }
                       className="block w-full px-4 py-2.5 rounded-md border-0 text-slate-900 dark:text-white bg-white dark:bg-slate-700 ring-1 ring-inset ring-slate-200 dark:ring-slate-600 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400"
                       step="0.01"
                       required
@@ -99,8 +123,14 @@ export default function ExpenseDialog({ isOpen, closeDialog, expense, onSave }: 
                     </label>
                     <input
                       type="date"
-                      value={editedExpense.date}
-                      onChange={(e) => setEditedExpense({ ...editedExpense, date: e.target.value })}
+                      disabled
+                      value={editedExpense.date.split("T")[0]}
+                      // onChange={(e) =>
+                      //   setEditedExpense({
+                      //     ...editedExpense,
+                      //     date: e.target.value,
+                      //   })
+                      // }
                       className="block w-full px-4 py-2.5 rounded-md border-0 text-slate-900 dark:text-white bg-white dark:bg-slate-700 ring-1 ring-inset ring-slate-200 dark:ring-slate-600 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400"
                       required
                     />
@@ -112,7 +142,12 @@ export default function ExpenseDialog({ isOpen, closeDialog, expense, onSave }: 
                     </label>
                     <textarea
                       value={editedExpense.description}
-                      onChange={(e) => setEditedExpense({ ...editedExpense, description: e.target.value })}
+                      onChange={(e) =>
+                        setEditedExpense({
+                          ...editedExpense,
+                          description: e.target.value,
+                        })
+                      }
                       className="block w-full px-4 py-2.5 rounded-md border-0 text-slate-900 dark:text-white bg-white dark:bg-slate-700 ring-1 ring-inset ring-slate-200 dark:ring-slate-600 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400"
                       rows={3}
                       placeholder="Add a description..."
@@ -142,4 +177,4 @@ export default function ExpenseDialog({ isOpen, closeDialog, expense, onSave }: 
       </Dialog>
     </Transition>
   );
-} 
+}

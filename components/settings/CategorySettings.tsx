@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Category } from '@/types';
-import { useStore } from '@/store/useStore';
+import { useStore } from '@/store/useExpenseStore';
 import { DATE_FORMAT } from '@/constants/index';
 import { DEFAULT_CATEGORIES } from '@/constants/index';
 

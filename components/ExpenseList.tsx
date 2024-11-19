@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import ExpenseDialog from "./ExpenseDialog";
 import Pagination from "./Pagination";
 import ExpenseCard from "./expenses/ExpenseCard";
-import { useExpenseStore } from "@/store/useStore";
+import { useExpenseStore } from "@/store/useExpenseStore";
 import { ITEMS_PER_PAGE } from "@/constants/index";
 import { Expense } from "@/types";
 
@@ -26,7 +26,7 @@ export default function ExpenseList({ dateRange }: ExpenseListProps) {
   useEffect(() => {
     const today = new Date().toISOString();
     fetchExpensesByDate(today);
-  }, [fetchExpensesByDate]);
+  }, [fetchExpensesByDate,]);
 
   if (isLoading) {
     return <div className="text-center py-8">Loading expenses...</div>;
@@ -50,7 +50,7 @@ export default function ExpenseList({ dateRange }: ExpenseListProps) {
   };
 
   const handleSaveExpense = (updatedExpense: Expense) => {
-    updateExpense(updatedExpense.id, updatedExpense);
+    updateExpense(updatedExpense._id!, updatedExpense);
     setIsDialogOpen(false);
   };
 

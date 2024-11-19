@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useExpenseStore } from "@/store/useStore";
+import { useExpenseStore } from "@/store/useExpenseStore";
 import { useCurrencyStore } from "@/store/currencyStore";
 import { CATEGORY_OPTIONS } from "@/constants/index";
 import { CurrencyPosition, ExpenseCategory, QuickAmount } from "@/types";
@@ -27,10 +27,9 @@ export default function ExpenseForm() {
     if (!expense.amount) return;
 
     addExpense({
-      id: Date.now().toString(),
       amount: parseFloat(expense.amount),
       category: expense.category,
-      date: new Date().toISOString().split("T")[0],
+      date: new Date().toISOString(),
     });
 
     setExpense({ amount: "", category: "other" });

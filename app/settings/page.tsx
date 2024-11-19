@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useCurrencyStore } from '@/store/currencyStore';
-import { useStore } from '@/store/useStore';
+import { useStore } from '@/store/useExpenseStore';
 import CurrencySettingsDialog from '@/components/settings/CurrencySettingsDialog';
 import QuickAmountSettings from '@/components/settings/QuickAmountSettings';
 import CategorySettings from '@/components/settings/CategorySettings';
