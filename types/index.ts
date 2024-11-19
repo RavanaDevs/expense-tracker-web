@@ -1,23 +1,30 @@
-export type Theme = 'light' | 'dark';
+export type Theme = "light" | "dark";
 
-export type CurrencyPosition = 'before' | 'after';
+export type CurrencyPosition = "before" | "after";
 
-export type ExpenseCategory = 
-  | 'food' 
-  | 'transportation' 
-  | 'entertainment' 
-  | 'utilities' 
-  | 'shopping' 
-  | 'healthcare' 
-  | 'education' 
-  | 'other';
+export type ExpenseCategory =
+  | "food"
+  | "transportation"
+  | "entertainment"
+  | "utilities"
+  | "shopping"
+  | "healthcare"
+  | "education"
+  | "other";
+
+export interface MongoType {
+  _id?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  __v?: string;
+}
 
 export interface DateRange {
   startDate: string;
   endDate: string;
 }
 
-export interface Expense {
+export interface Expense extends MongoType {
   id: string;
   amount: number;
   category: ExpenseCategory;
@@ -58,4 +65,4 @@ export interface User {
   email: string;
   avatarInitials: string;
   settings: UserSettings;
-} 
+}
