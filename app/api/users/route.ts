@@ -6,7 +6,6 @@ export async function GET(req: NextRequest) {
   await connectDB();
   try {
     const users = await User.find();
-    console.log(users);
     return NextResponse.json({ users });
   } catch (err) {
     console.log("Error while getting users.\n", err);
