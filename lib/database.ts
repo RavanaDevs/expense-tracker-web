@@ -1,42 +1,28 @@
+"use server";
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI || ""; // Replace with your MongoDB URI
-
-if (!MONGODB_URI) {
-  throw new Error("Please define the MONGODB_URI environment variable.");
+if (!process.env.MONGODB_URI) {
+  throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
 }
 
-// Global is used to prevent multiple connections in development
-declare global {
-  var mongoose: {
-    conn: mongoose.Connection | null;
-    promise: Promise<typeof mongoose> | null;
-  };
-}
+const uri = process.env.MONGODB_URI;
 
-let cached = global.mongoose;
+let isConnected = false; // Track the connection status.
 
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
-
-async function connectToDatabase() {
-  if (cached.conn) {
-    return cached.conn;
+export async function connectToDatabase() {
+  if (isConnected) {
+    console.log("=> Using existing database connection");
+    return mongoose.connection;
   }
 
-  if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-    };
+  try {
+    const db = await mongoose.connect(uri);
 
-    cached.promise = mongoose
-      .connect(MONGODB_URI, opts)
-      .then((mongoose) => mongoose.connection);
+    isConnected = true;
+    console.log("=> New database connection established");
+    return db;
+  } catch (error) {
+    console.error("Database connection error:", error);
+    throw error;
   }
-
-  cached.conn = await cached.promise;
-  return cached.conn;
 }
-
-export default connectToDatabase;

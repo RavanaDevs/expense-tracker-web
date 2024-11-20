@@ -1,12 +1,16 @@
+"use server";
 import User from "@/models/userModel";
 import { userSchema } from "@/validators/userSchemaValidator";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
+import { connectToDatabase } from "@/lib/database";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 const JWT_EXPIRES_IN = "5m";
 
 export async function POST(req: NextRequest) {
+  console.log(JWT_SECRET);
+  await connectToDatabase();
   try {
     const validationData = userSchema.parse(await req.json());
 
