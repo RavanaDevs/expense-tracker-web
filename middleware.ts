@@ -1,40 +1,46 @@
-// import { NextResponse, NextRequest } from "next/server";
-// import jwt from "jsonwebtoken";
-// import User from "./models/userModel";
+import { NextResponse, NextRequest } from "next/server";
+import jwt from "jsonwebtoken";
+import User from "./models/userModel";
 
-// const SECRET_KEY = process.env.JWT_SECRET || "your-secret-key";
+const SECRET_KEY = process.env.JWT_SECRET || "your-secret-key";
 
-// interface JwtPayload {
-//   userId: string;
-// }
+interface JwtPayload {
+  userId: string;
+}
 
-// export async function middleware(req: NextRequest) {
-//   const token = req.headers.get("Authorization")?.split(" ")[1];
+export async function middleware(req: NextRequest) {
+  const token = req.headers.get("Authorization")?.split(" ")[1];
 
-//   if (!token) {
-//     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-//   }
+  console.log(token)
 
-//   try {
-//     const decoded = jwt.verify(token, SECRET_KEY) as JwtPayload;
-//     const user = await User.findById(decoded.userId).select("-password");
+  if (!token) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
-//     if (!user) {
-//       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-//     }
+  try {
+    console.log("decoding")
+    const decoded = jwt.verify(token, SECRET_KEY) as JwtPayload;
+    console.log(decoded)
+    const user = await User.findById(decoded.userId).select("-password");
 
-//     const resposnse = NextResponse.next();
+    console.log(user);
 
-//     resposnse.headers.set("X-User", JSON.stringify(user));
-//     return resposnse;
-//   } catch (err) {
-//     return NextResponse.json(
-//       { error: "Invalid or expired token" },
-//       { status: 403 }
-//     );
-//   }
-// }
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-// export const config = {
-//   matcher: ["/api/:path*"],
-// };
+    const resposnse = NextResponse.next();
+
+    resposnse.headers.set("X-User", JSON.stringify(user));
+    return resposnse;
+  } catch (err) {
+    return NextResponse.json(
+      { error: "Invalid or expired token" },
+      { status: 403 }
+    );
+  }
+}
+
+export const config = {
+  matcher: ["/api/users/:path*"],
+};
