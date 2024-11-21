@@ -17,54 +17,38 @@ export const DEFAULT_QUICK_AMOUNTS: QuickAmount[] = [
 
 export const DEFAULT_CATEGORIES: Category[] = [
   {
-    id: "1",
-    value: "food",
-    label: "Food & Dining",
+    category: "Food & Dining",
     emoji: "🍽️",
     enabled: true,
   },
   {
-    id: "2",
-    value: "transport",
-    label: "Transport",
+    category: "Transport",
     emoji: "🚗",
     enabled: true,
   },
   {
-    id: "3",
-    value: "entertainment",
-    label: "Entertainment",
+    category: "Entertainment",
     emoji: "🎮",
     enabled: true,
   },
   {
-    id: "4",
-    value: "utilities",
-    label: "Bills & Utilities",
+    category: "Bills & Utilities",
     emoji: "📱",
     enabled: true,
   },
-  { id: "5", value: "shopping", label: "Shopping", emoji: "🛍️", enabled: true },
+  { category: "Shopping", emoji: "🛍️", enabled: true },
   {
-    id: "6",
-    value: "healthcare",
-    label: "Healthcare",
+    category: "Healthcare",
     emoji: "🏥",
     enabled: true,
   },
   {
-    id: "7",
-    value: "education",
-    label: "Education",
+    category: "Education",
     emoji: "📚",
     enabled: true,
   },
-  { id: "8", value: "other", label: "Other", emoji: "📌", enabled: true },
+  { category: "Other", emoji: "📌", enabled: true },
 ];
-
-export const CATEGORY_EMOJIS: Record<string, string> = Object.fromEntries(
-  DEFAULT_CATEGORIES.map((cat) => [cat.value, cat.emoji])
-) as Record<string, string>;
 
 export const ITEMS_PER_PAGE = 10;
 

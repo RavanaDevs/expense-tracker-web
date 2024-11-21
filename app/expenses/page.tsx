@@ -1,9 +1,8 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useEffect } from "react";
 import ExpenseList from "@/components/ExpenseList";
 import ExpenseStats from "@/components/ExpenseStats";
-import { exportToCSV } from "@/utils/export";
 import { useExpenseStore } from "@/store/useExpenseStore";
 import { useDateRangeStore } from "@/store/dateRangeStore";
 import { dateAsInput, dateAsIsoString } from "@/utils/date";
@@ -34,7 +33,7 @@ export default function ExpensesPage() {
 
   useEffect(() => {
     fetchAllExpenses();
-    fetchExpenseStats(null, null);
+    // const stats = fetchExpenseStats(null, null);
   }, [fetchAllExpenses, fetchExpenseStats]);
 
   const handleExport = () => {

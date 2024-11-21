@@ -4,7 +4,7 @@ import { useState } from "react";
 import { DATE_FORMAT } from "@/constants/index";
 import { DEFAULT_CATEGORIES } from "@/constants/index";
 import { useSettingsStore } from "@/store/useSettingsStore";
-import { Category } from "@/models/settingsModel";
+import { Category } from "@/types";
 
 interface CategorySettingsProps {
   isOpen: boolean;
@@ -25,10 +25,10 @@ export default function CategorySettings({
     emoji: "📌",
   });
 
-  const handleToggle = (id: string) => {
+  const handleToggle = (name: string) => {
     setCategories((prev) =>
       prev.map((category) =>
-        category.id === id
+        category.category === name
           ? { ...category, enabled: !category.enabled }
           : category
       )
@@ -37,17 +37,10 @@ export default function CategorySettings({
 
   const handleAdd = () => {
     if (newCategory.label.trim()) {
-      const newId = (
-        Math.max(...categories.map((c) => parseInt(c.id))) + 1
-      ).toString();
-      const value = newCategory.label.toLowerCase().replace(/\s+/g, "_");
-
       setCategories((prev) => [
         ...prev,
         {
-          id: newId,
-          value,
-          label: newCategory.label,
+          category: newCategory.label,
           emoji: newCategory.emoji,
           enabled: true,
         },
@@ -57,17 +50,19 @@ export default function CategorySettings({
     }
   };
 
-  const handleRemove = (id: string) => {
+  const handleRemove = (name: string) => {
     // Prevent removing if it's the last enabled category
     const enabledCount = categories.filter((c) => c.enabled).length;
-    const category = categories.find((c) => c.id === id);
+    const category = categories.find((c) => c.category === name);
 
     if (enabledCount === 1 && category?.enabled) {
       alert("You must have at least one enabled category");
       return;
     }
 
-    setCategories((prev) => prev.filter((category) => category.id !== id));
+    setCategories((prev) =>
+      prev.filter((category) => category.category !== name)
+    );
   };
 
   const handleSave = () => {
@@ -133,9 +128,9 @@ export default function CategorySettings({
 
         {/* Categories list */}
         <div className="space-y-2">
-          {categories.map((category) => (
+          {categories.map((category, index) => (
             <div
-              key={category.id}
+              key={index}
               className="flex items-center justify-between p-3 rounded-md bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600"
             >
               <div className="flex items-center space-x-3">
@@ -143,18 +138,18 @@ export default function CategorySettings({
                   <input
                     type="checkbox"
                     checked={category.enabled}
-                    onChange={() => handleToggle(category.id)}
+                    onChange={() => handleToggle(category.category)}
                     className="sr-only peer"
                   />
                   <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-slate-300 dark:peer-focus:ring-slate-800 rounded-full peer dark:bg-slate-600 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-slate-800 dark:peer-checked:bg-slate-700"></div>
                 </label>
                 <span className="text-xl">{category.emoji}</span>
                 <span className="text-slate-900 dark:text-white font-medium">
-                  {category.label}
+                  {category.category}
                 </span>
               </div>
               <button
-                onClick={() => handleRemove(category.id)}
+                onClick={() => handleRemove(category.category)}
                 className="p-1 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 transition-colors"
               >
                 ✕

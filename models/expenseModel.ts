@@ -1,8 +1,10 @@
+import { Category } from "@/types";
 import { Schema, model, Document, models } from "mongoose";
+import { boolean } from "zod";
 
 interface IExpense extends Document {
   amount: number;
-  category: string;
+  category: any;
   description?: string | null;
   date: Date;
   user: string;
@@ -11,7 +13,10 @@ interface IExpense extends Document {
 const expenseSchema = new Schema<IExpense>(
   {
     amount: { type: Number, required: true },
-    category: { type: String, required: true },
+    category: {
+      type: Schema.Types.Mixed,
+      required: true,
+    },
     description: { type: String },
     date: { type: Date, required: true },
     user: { type: String, required: true },

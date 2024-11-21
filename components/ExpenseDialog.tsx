@@ -2,11 +2,9 @@
 
 import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { CATEGORY_EMOJIS } from "@/constants/index";
-import { formatCurrency } from "@/utils/currency";
-import { useCurrencyStore } from "@/store/currencyStore";
-import { Expense, CurrencyPosition, ExpenseCategory } from "@/types";
+import { Expense, CurrencyPosition } from "@/types";
 import { useExpenseStore } from "@/store/useExpenseStore";
+import { useSettingsStore } from "@/store/useSettingsStore";
 
 interface ExpenseDialogProps {
   isOpen: boolean;
@@ -21,7 +19,7 @@ export default function ExpenseDialog({
   expense,
   onSave,
 }: ExpenseDialogProps) {
-  const { settings: currencySettings } = useCurrencyStore();
+  const { settings } = useSettingsStore();
   const [editedExpense, setEditedExpense] = useState({
     ...expense,
     description: expense.description || "",
@@ -34,7 +32,7 @@ export default function ExpenseDialog({
   };
 
   const renderCurrencySymbol = (position: CurrencyPosition) => {
-    if (currencySettings.position !== position) return null;
+    if (settings.currencySettings.position !== position) return null;
 
     return (
       <div
@@ -43,7 +41,7 @@ export default function ExpenseDialog({
         } flex items-center`}
       >
         <span className="text-slate-500 sm:text-sm">
-          {currencySettings.symbol}
+          {settings.currencySettings.symbol}
         </span>
       </div>
     );
@@ -80,17 +78,13 @@ export default function ExpenseDialog({
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <span className="text-2xl">
-                        {
-                          CATEGORY_EMOJIS[
-                            editedExpense.category as ExpenseCategory
-                          ]
-                        }
+                        {editedExpense.category.emoji!}
                       </span>
                       <Dialog.Title
                         as="h3"
                         className="text-lg font-medium text-slate-900 dark:text-white capitalize"
                       >
-                        {editedExpense.category}
+                        {editedExpense.category.category!}
                       </Dialog.Title>
                     </div>
                     <span className="text-sm text-slate-500 dark:text-slate-400">

@@ -2,16 +2,15 @@
 
 import { useState } from "react";
 import { useExpenseStore } from "@/store/useExpenseStore";
-import { CurrencyPosition, Expense, QuickAmount } from "@/types";
+import { Category, CurrencyPosition, Expense, QuickAmount } from "@/types";
 import { useSettingsStore } from "@/store/useSettingsStore";
 
 export default function ExpenseForm() {
   const { addExpense } = useExpenseStore();
   const { settings } = useSettingsStore();
 
-  const [expense, setExpense] = useState({
+  const [expense, setExpense] = useState<any>({
     amount: "",
-    category: "other",
   });
 
   const enabledQuickAmounts =
@@ -28,8 +27,9 @@ export default function ExpenseForm() {
       amount: Number(expense.amount),
       date: new Date(),
     };
+    console.log(expenseToAdd);
     addExpense(expenseToAdd);
-    setExpense({ amount: "", category: "other" });
+    setExpense({ amount: "" });
   };
 
   const handleQuickAdd = (amount: number) => {
@@ -100,21 +100,17 @@ export default function ExpenseForm() {
           onChange={(e) =>
             setExpense({
               ...expense,
-              category: e.target.value,
+              category: settings.categories[Number(e.target.value)],
             })
           }
           className="block w-full px-4 py-3 rounded-md border-0 text-slate-900 dark:text-white ring-1 ring-inset ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400 bg-white dark:bg-slate-700"
         >
           <option>---</option>
           {settings.categories.map(
-            (option) =>
-              option.enabled && (
-                <option
-                  key={option.value}
-                  value={option.value}
-                  className="dark:bg-slate-700"
-                >
-                  {option.label}
+            (category, index) =>
+              category.enabled && (
+                <option key={index} value={index} className="dark:bg-slate-700">
+                  {category.category}
                 </option>
               )
           )}

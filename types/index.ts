@@ -12,9 +12,7 @@ interface MongoType {
 }
 
 export interface Category {
-  id: string;
-  value: string;
-  label: string;
+  category: string;
   emoji: string;
   enabled: boolean;
 }
@@ -25,7 +23,7 @@ export interface DateRange {
 
 export interface Expense extends MongoType {
   amount: number;
-  category: string;
+  category: Category;
   date: Date;
   description?: string;
 }

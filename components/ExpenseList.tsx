@@ -24,8 +24,6 @@ export default function ExpenseList() {
 
   const { expenses } = useExpenseStore();
 
-  useEffect(() => {}, [expenses]);
-
   if (isLoading) {
     return <div className="text-center py-8">Loading expenses...</div>;
   }

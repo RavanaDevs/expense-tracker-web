@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
-import { useCurrencyStore } from "@/store/currencyStore";
 import CurrencySettingsDialog from "@/components/settings/CurrencySettingsDialog";
 import QuickAmountSettings from "@/components/settings/QuickAmountSettings";
 import CategorySettings from "@/components/settings/CategorySettings";

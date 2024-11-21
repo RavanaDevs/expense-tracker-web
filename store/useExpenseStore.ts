@@ -5,7 +5,7 @@ import { useDateRangeStore } from "./dateRangeStore";
 
 interface ExpenseStore {
   expenses: Expense[];
-  expenseStats: ExpenseStats;
+  expenseStats: ExpenseStats | null;
   selectedExpense: Expense | null;
   isLoading: boolean;
   error: string | null;
