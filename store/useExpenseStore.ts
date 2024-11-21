@@ -83,10 +83,21 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
 
   addExpense: async (expense: Expense) => {
     try {
-      const newExpense = await expenseService.createExpense(expense);
+      const res = await expenseService.createExpense(expense);
+      const data = await res.json();
+
+      if (!data.expense) {
+        set((state) => ({
+          error: "Error! Expense not created.",
+        }));
+      }
+
+      const newExpense: Expense = data.expense;
+
       set((state) => ({
         expenses: [...state.expenses, newExpense],
       }));
+      console.log(newExpense);
       return newExpense;
     } catch (error) {
       set({ error: "Failed to add expense" });

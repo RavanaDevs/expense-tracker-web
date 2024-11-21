@@ -5,7 +5,7 @@ interface IExpense extends Document {
   category: string;
   description?: string | null;
   date: Date;
-  user: Schema.Types.ObjectId;
+  user: string;
 }
 
 const expenseSchema = new Schema<IExpense>(
@@ -14,7 +14,7 @@ const expenseSchema = new Schema<IExpense>(
     category: { type: String, required: true },
     description: { type: String },
     date: { type: Date, required: true },
-    user: { type: Schema.Types.ObjectId, ref: "user", required: true },
+    user: { type: String, required: true },
   },
   { timestamps: true }
 );
@@ -23,6 +23,6 @@ const expenseSchema = new Schema<IExpense>(
 expenseSchema.index({ user: 1, date: -1 });
 expenseSchema.index({ category: 1 });
 
-const Expense = models?.expense || model<IExpense>("expense", expenseSchema);
+const Expense = models?.Expense || model<IExpense>("Expense", expenseSchema);
 
 export default Expense;

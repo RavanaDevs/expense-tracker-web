@@ -32,7 +32,6 @@ export const expenseService = {
       },
       body: JSON.stringify(expense),
     });
-    console.log(await response.json);
-    return await response.json();
+    return response;
   },
 };
