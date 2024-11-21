@@ -1,9 +1,12 @@
 import { useCurrencyStore } from "@/store/currencyStore";
+import { useSettingsStore } from "@/store/useSettingsStore";
 
 export const formatCurrency = (amount: number): string => {
-  const { settings } = useCurrencyStore.getState();
+  const currencySettings = useSettingsStore(
+    (state) => state.settings.currencySettings
+  );
   const formattedAmount = amount ? amount.toFixed(2) : 0;
-  return settings.position === "before"
-    ? `${settings.symbol}${formattedAmount}`
-    : `${formattedAmount}${settings.symbol}`;
+  return currencySettings.position === "before"
+    ? `${currencySettings.symbol}${formattedAmount}`
+    : `${formattedAmount}${currencySettings.symbol}`;
 };

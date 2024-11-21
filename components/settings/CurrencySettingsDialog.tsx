@@ -1,26 +1,31 @@
-'use client';
+"use client";
 
-import { Fragment, useState } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
-import { useCurrencyStore } from '@/store/currencyStore';
-import { CurrencyPosition } from '@/types';
+import { Fragment, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { useCurrencyStore } from "@/store/currencyStore";
+import { CurrencyPosition, CurrencySettings } from "@/types";
+import { useSettingsStore } from "@/store/useSettingsStore";
 
 interface CurrencySettingsDialogProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export default function CurrencySettingsDialog({ isOpen, onClose }: CurrencySettingsDialogProps) {
-  const { settings: currencySettings, updateSettings } = useCurrencyStore();
-  const [settings, setSettings] = useState({
-    symbol: currencySettings.symbol,
-    code: currencySettings.code,
-    position: currencySettings.position,
-  });
+export default function CurrencySettingsDialog({
+  isOpen,
+  onClose,
+}: CurrencySettingsDialogProps) {
+  const currencySettings = useSettingsStore(
+    (state) => state.settings.currencySettings
+  );
+  const updateCurrencySettings = useSettingsStore(
+    (state) => state.updateCurrencySettings
+  );
+  const [settings, setSettings] = useState<CurrencySettings>(currencySettings);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    updateSettings(settings);
+    updateCurrencySettings(settings);
     onClose();
   };
 
@@ -68,7 +73,9 @@ export default function CurrencySettingsDialog({ isOpen, onClose }: CurrencySett
                     <input
                       type="text"
                       value={settings.symbol}
-                      onChange={(e) => setSettings({ ...settings, symbol: e.target.value })}
+                      onChange={(e) =>
+                        setSettings({ ...settings, symbol: e.target.value })
+                      }
                       className="block w-full rounded-md border-0 py-2.5 px-4 text-slate-900 dark:text-white bg-white dark:bg-slate-700 ring-1 ring-inset ring-slate-200 dark:ring-slate-600 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400"
                       placeholder="$, €, ¥"
                       required
@@ -82,7 +89,9 @@ export default function CurrencySettingsDialog({ isOpen, onClose }: CurrencySett
                     <input
                       type="text"
                       value={settings.code}
-                      onChange={(e) => setSettings({ ...settings, code: e.target.value })}
+                      onChange={(e) =>
+                        setSettings({ ...settings, code: e.target.value })
+                      }
                       className="block w-full rounded-md border-0 py-2.5 px-4 text-slate-900 dark:text-white bg-white dark:bg-slate-700 ring-1 ring-inset ring-slate-200 dark:ring-slate-600 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400"
                       placeholder="USD, EUR, JPY"
                       required
@@ -95,11 +104,20 @@ export default function CurrencySettingsDialog({ isOpen, onClose }: CurrencySett
                     </label>
                     <select
                       value={settings.position}
-                      onChange={(e) => setSettings({ ...settings, position: e.target.value as CurrencyPosition })}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          position: e.target.value as CurrencyPosition,
+                        })
+                      }
                       className="block w-full rounded-md border-0 py-2.5 px-4 text-slate-900 dark:text-white bg-white dark:bg-slate-700 ring-1 ring-inset ring-slate-200 dark:ring-slate-600 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400"
                     >
-                      <option value="before" className="dark:bg-slate-700">Before amount ($100)</option>
-                      <option value="after" className="dark:bg-slate-700">After amount (100$)</option>
+                      <option value="before" className="dark:bg-slate-700">
+                        Before amount ($100)
+                      </option>
+                      <option value="after" className="dark:bg-slate-700">
+                        After amount (100$)
+                      </option>
                     </select>
                   </div>
 
@@ -126,4 +144,4 @@ export default function CurrencySettingsDialog({ isOpen, onClose }: CurrencySett
       </Dialog>
     </Transition>
   );
-} 
+}

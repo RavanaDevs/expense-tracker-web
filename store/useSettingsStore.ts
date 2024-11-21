@@ -1,12 +1,13 @@
 import { DEFAULT_CURRENCY_SETTINGS, DEFAULT_QUICK_AMOUNTS } from "@/constants";
 import { QuickAmount } from "@/models/settingsModel";
-import { Settings } from "@/types";
+import { CurrencySettings, Settings } from "@/types";
 import { create } from "zustand";
 
 interface SettingsStore {
   settings: Settings;
   loadSettings: () => void;
   updateQuickAmounts: (newAmounts: QuickAmount[]) => Promise<void>;
+  updateCurrencySettings: (newSettings: CurrencySettings) => Promise<void>;
 }
 
 export const useSettingsStore = create<SettingsStore>()((set) => ({
@@ -18,6 +19,11 @@ export const useSettingsStore = create<SettingsStore>()((set) => ({
   updateQuickAmounts: async (newAmounts) => {
     set((state) => ({
       settings: { ...state.settings, quickAmounts: newAmounts },
+    }));
+  },
+  updateCurrencySettings: async (newSettings) => {
+    set((state) => ({
+      settings: { ...state.settings, currencySettings: newSettings },
     }));
   },
 }));
