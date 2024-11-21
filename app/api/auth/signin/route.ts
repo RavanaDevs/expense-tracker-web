@@ -2,13 +2,14 @@ import User from "@/models/userModel";
 import { loginSchema } from "@/validators/userSchemaValidator";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
-import connectDB from "@/lib/database";
+import connectToDatabase from "@/lib/database";
+import { sign } from "@/lib/customjwt";
 
 const JWT_SECRET = process.env.JWT_SECRET || "simple-key";
 const JWT_EXPIRES_IN = "5m";
 
 export async function POST(req: NextRequest) {
-  await connectDB();
+  await connectToDatabase();
   try {
     const validationData = loginSchema.parse(await req.json());
     const { email, password } = validationData;
@@ -32,9 +33,11 @@ export async function POST(req: NextRequest) {
     }
 
     // Generate token
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
-      expiresIn: JWT_EXPIRES_IN,
-    });
+    // const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
+    //   expiresIn: JWT_EXPIRES_IN,
+    // });
+
+    const token = await sign({ userId: user._id }, JWT_SECRET);
 
     return NextResponse.json(
       {
