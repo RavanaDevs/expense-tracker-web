@@ -15,6 +15,7 @@ interface ExpenseStore {
   setSelectedExpense: (selectedExpense: Expense | null) => void;
   setError: (error: string | null) => void;
   setLoading: (loading: boolean) => void;
+  fetchAllExpenses: () => Promise<void>;
   fetchExpensesByDate: (date: string) => Promise<void>;
   fetchExpensesByDateRange: (
     startDate: string,
@@ -37,6 +38,12 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
   setSelectedExpense: (selectedExpense) => set({ selectedExpense }),
   setError: (error) => set({ error }),
   setLoading: (isLoading) => set({ isLoading }),
+
+  fetchAllExpenses: async () => {
+    const res = await expenseService.getAllExpenses();
+    const data = await res.json();
+    set((state) => ({ expenses: data }));
+  },
 
   fetchExpensesByDate: async (date: string) => {
     set({ isLoading: true, error: null });

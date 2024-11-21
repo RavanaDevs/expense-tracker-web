@@ -24,6 +24,14 @@ export const expenseService = {
     return response.data;
   },
 
+  async getAllExpenses() {
+    const response = await fetch("/api/expenses/all", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    return response;
+  },
+
   async createExpense(expense: Expense) {
     const response = await fetch("/api/expenses", {
       method: "POST",

@@ -9,11 +9,15 @@ import { useDateRangeStore } from "@/store/dateRangeStore";
 import { dateAsInput, dateAsIsoString } from "@/utils/date";
 
 export default function ExpensesPage() {
-  const { expenses } = useExpenseStore();
+  const { expenses, fetchAllExpenses } = useExpenseStore();
   const { startDate, endDate, setStartDate, setEndDate } = useDateRangeStore();
 
   const handleStartDateChange = (date: Date) => setStartDate(date);
   const handleEndDateChange = (date: Date) => setEndDate(date);
+
+  useEffect(() => {
+    fetchAllExpenses();
+  }, [fetchAllExpenses]);
 
   const handleExport = () => {
     console.log(expenses);
