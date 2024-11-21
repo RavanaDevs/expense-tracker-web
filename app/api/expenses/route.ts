@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     const expense = await e.save();
 
     return NextResponse.json(
-      { message: "Expense Created" },
+      { message: "Expense Created", expense },
       { status: 201 }
     );
   } catch (err) {

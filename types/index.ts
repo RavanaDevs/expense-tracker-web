@@ -26,7 +26,7 @@ export interface DateRange {
 export interface Expense extends MongoType {
   amount: number;
   category: string;
-  date?: Date;
+  date: Date;
   description?: string;
 }
 

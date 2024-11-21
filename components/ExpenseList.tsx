@@ -5,21 +5,29 @@ import ExpenseDialog from "./ExpenseDialog";
 import Pagination from "./Pagination";
 import ExpenseCard from "./expenses/ExpenseCard";
 import { useExpenseStore } from "@/store/useExpenseStore";
-import { useExpenses } from "@/store/selectors";
 import { ITEMS_PER_PAGE } from "@/constants/index";
 import { Expense } from "@/types";
 import { useDateRangeStore } from "@/store/dateRangeStore";
 import { dateAsIsoString } from "@/utils/date";
+import { useFilteredExpense } from "@/store/selectors";
 
 export default function ExpenseList() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { updateExpense, setSelectedExpense, selectedExpense } =
-    useExpenseStore();
-  const { expenses, isLoading, error } = useExpenses();
+  const {
+    selectedExpense,
+    isLoading,
+    error,
+    setSelectedExpense,
+    updateExpense,
+  } = useExpenseStore();
 
-  useEffect(() => {}, [expenses]);
+  const { expenses } = useFilteredExpense();
+
+  useEffect(() => {
+    console.log(expenses);
+  }, [expenses]);
 
   if (isLoading) {
     return <div className="text-center py-8">Loading expenses...</div>;
@@ -76,7 +84,10 @@ export default function ExpenseList() {
       {selectedExpense && (
         <ExpenseDialog
           isOpen={isDialogOpen}
-          closeDialog={() => {setIsDialogOpen(false); setSelectedExpense(null)}}
+          closeDialog={() => {
+            setIsDialogOpen(false);
+            setSelectedExpense(null);
+          }}
           expense={selectedExpense}
           onSave={handleSaveExpense}
         />

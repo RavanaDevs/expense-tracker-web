@@ -9,25 +9,11 @@ import { useDateRangeStore } from "@/store/dateRangeStore";
 import { dateAsInput, dateAsIsoString } from "@/utils/date";
 
 export default function ExpensesPage() {
-  const { setStartDate, setEndDate, startDate, endDate } = useDateRangeStore();
-  const { fetchExpensesByDate, fetchExpensesByDateRange, expenses } =
-    useExpenseStore();
+  const { expenses } = useExpenseStore();
+  const { startDate, endDate, setStartDate, setEndDate } = useDateRangeStore();
 
-  const handleStartDateChange = (date: string) => {
-    setStartDate(new Date(date));
-    fetchExpensesByDate(dateAsIsoString(new Date(date)));
-  };
-  const handleEndDateChange = (date: string) => {
-    setEndDate(new Date(date));
-    fetchExpensesByDateRange(
-      dateAsIsoString(startDate!),
-      dateAsIsoString(new Date(date))
-    );
-  };
-
-  useEffect(() => {
-    fetchExpensesByDate(dateAsIsoString(new Date()));
-  }, []);
+  const handleStartDateChange = (date: Date) => setStartDate(date);
+  const handleEndDateChange = (date: Date) => setEndDate(date);
 
   const handleExport = () => {
     console.log(expenses);
@@ -51,7 +37,9 @@ export default function ExpensesPage() {
                 value={
                   startDate ? dateAsInput(startDate) : dateAsInput(new Date())
                 }
-                onChange={(e) => handleStartDateChange(e.target.value)}
+                onChange={(e) =>
+                  handleStartDateChange(new Date(e.target.value))
+                }
                 className="px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-md text-sm text-slate-900 dark:text-white bg-white dark:bg-slate-700 focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-transparent"
               />
             </div>
@@ -63,7 +51,7 @@ export default function ExpensesPage() {
                 type="date"
                 name="endDate"
                 value={endDate ? dateAsInput(endDate) : dateAsInput(new Date())}
-                onChange={(e) => handleEndDateChange(e.target.value)}
+                onChange={(e) => handleEndDateChange(new Date(e.target.value))}
                 className="px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-md text-sm text-slate-900 dark:text-white bg-white dark:bg-slate-700 focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-transparent"
               />
             </div>

@@ -95,7 +95,7 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
       const newExpense: Expense = data.expense;
 
       set((state) => ({
-        expenses: [...state.expenses, newExpense],
+        expenses: [newExpense, ...state.expenses],
       }));
       console.log(newExpense);
       return newExpense;
