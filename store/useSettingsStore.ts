@@ -1,7 +1,10 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Settings, DateRange, CurrencySettings } from "@/types";
-import { DEFAULT_CURRENCY_SETTINGS, DEFAULT_QUICK_AMOUNTS } from "@/constants/index";
+import {
+  DEFAULT_CURRENCY_SETTINGS,
+  DEFAULT_QUICK_AMOUNTS,
+} from "@/constants/index";
 
 interface SettingsStore {
   settings: Settings;
@@ -13,10 +16,10 @@ const getDefaultDateRange = (): DateRange => {
   const today = new Date();
   const startDate = new Date();
   startDate.setMonth(today.getMonth() - 1);
-  
+
   return {
-    startDate: startDate.toISOString().split('T')[0],
-    endDate: today.toISOString().split('T')[0]
+    startDate: startDate.toISOString().split("T")[0],
+    endDate: today.toISOString().split("T")[0],
   };
 };
 
@@ -27,6 +30,7 @@ export const useSettingsStore = create<SettingsStore>()(
         currency: DEFAULT_CURRENCY_SETTINGS,
         quickAmounts: DEFAULT_QUICK_AMOUNTS,
         dateRange: getDefaultDateRange(),
+        categories: [],
       },
       updateDateRange: (dateRange) =>
         set((state) => ({
@@ -38,7 +42,7 @@ export const useSettingsStore = create<SettingsStore>()(
         })),
     }),
     {
-      name: 'settings-store',
+      name: "settings-store",
     }
   )
-); 
+);

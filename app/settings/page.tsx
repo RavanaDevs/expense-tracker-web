@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useCurrencyStore } from '@/store/currencyStore';
-import { useStore } from '@/store/useExpenseStore';
 import CurrencySettingsDialog from '@/components/settings/CurrencySettingsDialog';
 import QuickAmountSettings from '@/components/settings/QuickAmountSettings';
 import CategorySettings from '@/components/settings/CategorySettings';
+import { useSettingsStore } from '@/store/useSettingsStore';
 
 export default function SettingsPage() {
   const [isCurrencyDialogOpen, setIsCurrencyDialogOpen] = useState(false);
@@ -14,7 +14,7 @@ export default function SettingsPage() {
   const [isCategoryDialogOpen, setCategoryDialogOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const { settings: currencySettings } = useCurrencyStore();
-  const settings = useStore((state) => state.settings);
+  const settings = useSettingsStore((state) => state.settings);
 
   return (
     <div className="w-full max-w-2xl mx-auto">
@@ -82,7 +82,8 @@ export default function SettingsPage() {
               <div>
                 <h3 className="text-base font-medium text-slate-900 dark:text-white">Category Settings</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                  Customize expense categories ({settings.categories?.filter((c: { enabled: boolean }) => c.enabled).length || 0} enabled)
+                  Customize expense categories ( enabled)
+                  {/* {settings.categories?.filter((c: { enabled: boolean }) => c.enabled).length || 0} */}
                 </p>
               </div>
               <span className="text-slate-400 dark:text-slate-500">→</span>
@@ -118,10 +119,10 @@ export default function SettingsPage() {
             <div className="fixed inset-0 bg-black bg-opacity-25 dark:bg-opacity-50" onClick={() => setCategoryDialogOpen(false)} />
             <div className="relative bg-white dark:bg-slate-800 rounded-lg shadow-xl max-w-md w-full p-6">
               <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-4">Category Settings</h3>
-              <CategorySettings
+              {/* <CategorySettings
                 isOpen={isCategoryDialogOpen}
                 onClose={() => setCategoryDialogOpen(false)}
-              />
+              /> */}
             </div>
           </div>
         </div>

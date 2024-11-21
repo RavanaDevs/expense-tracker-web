@@ -40,4 +40,5 @@ export interface Settings {
   currency: CurrencySettings;
   quickAmounts: QuickAmount[];
   dateRange: DateRange;
+  categories: string[];
 }
