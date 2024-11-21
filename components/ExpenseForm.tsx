@@ -2,19 +2,13 @@
 
 import { useState } from "react";
 import { useExpenseStore } from "@/store/useExpenseStore";
-import { useCurrencyStore } from "@/store/currencyStore";
 import { CATEGORY_OPTIONS } from "@/constants/index";
-import {
-  CurrencyPosition,
-  Expense,
-  ExpenseCategory,
-  QuickAmount,
-} from "@/types";
+import { CurrencyPosition, Expense, QuickAmount } from "@/types";
+import { useSettingsStore } from "@/store/useSettingsStore";
 
 export default function ExpenseForm() {
-  const preferences = useExpenseStore((state) => state.preferences);
   const { addExpense } = useExpenseStore();
-  const { settings: currencySettings } = useCurrencyStore();
+  const { settings } = useSettingsStore();
 
   const [expense, setExpense] = useState({
     amount: "",
@@ -22,7 +16,7 @@ export default function ExpenseForm() {
   });
 
   const enabledQuickAmounts =
-    preferences.quickAmounts
+    settings.quickAmounts
       ?.filter((qa) => qa.enabled)
       .map((qa) => qa.amount)
       .sort((a, b) => a - b) || [];
@@ -49,7 +43,7 @@ export default function ExpenseForm() {
   };
 
   const renderCurrencySymbol = (position: CurrencyPosition) => {
-    if (currencySettings.position !== position) return null;
+    if (settings.currencySettings.position !== position) return null;
 
     return (
       <div
@@ -58,7 +52,7 @@ export default function ExpenseForm() {
         } flex items-center`}
       >
         <span className="text-slate-600 dark:text-slate-400 sm:text-sm">
-          {currencySettings.symbol}
+          {settings.currencySettings.symbol}
         </span>
       </div>
     );
@@ -75,7 +69,11 @@ export default function ExpenseForm() {
             onChange={(e) => setExpense({ ...expense, amount: e.target.value })}
             placeholder="0.00"
             className={`block w-full px-4 py-3 rounded-md border-0 text-slate-900 dark:text-white ring-1 ring-inset ring-slate-200 dark:ring-slate-700 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400 text-lg bg-white dark:bg-slate-700
-              ${currencySettings.position === "before" ? "pl-7" : "pr-7"}`}
+              ${
+                settings.currencySettings.position === "before"
+                  ? "pl-7"
+                  : "pr-7"
+              }`}
             required
           />
           {renderCurrencySymbol("after")}
@@ -104,7 +102,7 @@ export default function ExpenseForm() {
           onChange={(e) =>
             setExpense({
               ...expense,
-              category: e.target.value as ExpenseCategory,
+              category: e.target.value,
             })
           }
           className="block w-full px-4 py-3 rounded-md border-0 text-slate-900 dark:text-white ring-1 ring-inset ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400 bg-white dark:bg-slate-700"

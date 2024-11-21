@@ -4,16 +4,6 @@ export type Theme = "light" | "dark";
 
 export type CurrencyPosition = "before" | "after";
 
-export type ExpenseCategory =
-  | "food"
-  | "transportation"
-  | "entertainment"
-  | "utilities"
-  | "shopping"
-  | "healthcare"
-  | "education"
-  | "other";
-
 interface MongoType {
   _id?: string;
   createdAt?: string;
@@ -53,10 +43,9 @@ export interface CurrencySettings {
 }
 
 export interface Settings {
-  currency: CurrencySettings;
+  currencySettings: CurrencySettings;
   quickAmounts: QuickAmount[];
-  dateRange: DateRange;
-  categories: string[];
+  // categories: string[];
 }
 
 export interface ExpenseStats {

@@ -1,9 +1,4 @@
-import {
-  ExpenseCategory,
-  CurrencySettings,
-  QuickAmount,
-  Category,
-} from "@/types";
+import { CurrencySettings, QuickAmount, Category } from "@/types";
 
 export const DEFAULT_CURRENCY_SETTINGS: CurrencySettings = {
   symbol: "$",
@@ -30,8 +25,8 @@ export const DEFAULT_CATEGORIES: Category[] = [
   },
   {
     id: "2",
-    value: "transportation",
-    label: "Transportation",
+    value: "transport",
+    label: "Transport",
     emoji: "🚗",
     enabled: true,
   },
@@ -76,10 +71,9 @@ export const CATEGORY_OPTIONS = [
   { value: "other", label: "Other", emoji: "📌 " },
 ];
 
-export const CATEGORY_EMOJIS: Record<ExpenseCategory, string> =
-  Object.fromEntries(
-    DEFAULT_CATEGORIES.map((cat) => [cat.value, cat.emoji])
-  ) as Record<ExpenseCategory, string>;
+export const CATEGORY_EMOJIS: Record<string, string> = Object.fromEntries(
+  DEFAULT_CATEGORIES.map((cat) => [cat.value, cat.emoji])
+) as Record<string, string>;
 
 export const ITEMS_PER_PAGE = 10;
 
