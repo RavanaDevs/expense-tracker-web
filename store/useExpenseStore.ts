@@ -17,11 +17,8 @@ interface ExpenseStore {
   setError: (error: string | null) => void;
   setLoading: (loading: boolean) => void;
   fetchAllExpenses: () => Promise<void>;
-  fetchExpensesByDate: (date: string) => Promise<void>;
-  fetchExpensesByDateRange: (
-    startDate: string,
-    endDate: string
-  ) => Promise<void>;
+  fetchExpensesByDate: (date: Date) => Promise<void>;
+  fetchExpensesByDateRange: (startDate: Date, endDate: Date) => Promise<void>;
   updateExpense: (id: string, updatedExpense: Expense) => Promise<Expense>;
   addExpense: (expense: Expense) => Promise<Expense>;
 }
@@ -47,20 +44,25 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
     set((state) => ({ expenses: data }));
   },
 
-  fetchExpensesByDate: async (date: string) => {
+  fetchExpensesByDate: async (date: Date) => {
     set({ isLoading: true, error: null });
     try {
-      const expenses = await expenseService.getByDate(date);
+      const res = await expenseService.getExpensesByDate(date);
+      const expenses = await res.json();
       set({ expenses, isLoading: false });
     } catch (error) {
       set({ error: "Failed to fetch expenses", isLoading: false });
       console.error("Error fetching expenses:", error);
     }
   },
-  fetchExpensesByDateRange: async (startDate: string, endDate: string) => {
+  fetchExpensesByDateRange: async (startDate: Date, endDate: Date) => {
     set({ isLoading: true, error: null });
     try {
-      const expenses = await expenseService.getByDateRange(startDate, endDate);
+      const res = await expenseService.getExpensesByDateRange(
+        startDate,
+        endDate
+      );
+      const expenses = await res.json();
       set({ expenses, isLoading: false });
     } catch (error) {
       set({ error: "Failed to fetch expenses", isLoading: false });

@@ -6,16 +6,16 @@ export interface DateRange {
 }
 
 interface DateRangeStore {
-  startDate: Date | null;
-  endDate: Date | null;
+  startDate: Date;
+  endDate: Date;
   setStartDate: (date: Date) => void;
   setEndDate: (date: Date) => void;
   setDateRange: (range: DateRange) => void;
 }
 
 export const useDateRangeStore = create<DateRangeStore>((set) => ({
-  startDate: null,
-  endDate: null,
+  startDate: new Date(),
+  endDate: new Date(),
   setStartDate: (startDate) => set({ startDate }),
   setEndDate: (endDate) => set({ endDate }),
   setDateRange: (range) =>

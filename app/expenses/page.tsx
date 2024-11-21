@@ -9,11 +9,25 @@ import { useDateRangeStore } from "@/store/dateRangeStore";
 import { dateAsInput, dateAsIsoString } from "@/utils/date";
 
 export default function ExpensesPage() {
-  const { expenses, fetchAllExpenses } = useExpenseStore();
+  const {
+    expenses,
+    fetchAllExpenses,
+    fetchExpensesByDate,
+    fetchExpensesByDateRange,
+  } = useExpenseStore();
   const { startDate, endDate, setStartDate, setEndDate } = useDateRangeStore();
 
   const handleStartDateChange = (date: Date) => setStartDate(date);
   const handleEndDateChange = (date: Date) => setEndDate(date);
+
+  const handleSearch = () => {
+    if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
+      fetchExpensesByDateRange(startDate, endDate);
+    } else if (!isNaN(startDate.getTime())) {
+      fetchExpensesByDate(startDate);
+    }
+    return;
+  };
 
   useEffect(() => {
     fetchAllExpenses();
@@ -58,6 +72,15 @@ export default function ExpensesPage() {
                 onChange={(e) => handleEndDateChange(new Date(e.target.value))}
                 className="px-4 py-2.5 border border-slate-200 dark:border-slate-600 rounded-md text-sm text-slate-900 dark:text-white bg-white dark:bg-slate-700 focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-transparent"
               />
+            </div>
+            <div className="flex flex-col justify-end">
+              <button
+                type="submit"
+                className="w-full bg-slate-800 dark:bg-slate-700 text-white py-3 px-5 rounded-md text-sm font-medium hover:bg-slate-700 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:ring-offset-2 dark:focus:ring-offset-slate-900 transition-colors"
+                onClick={handleSearch}
+              >
+                Search
+              </button>
             </div>
           </div>
         </div>

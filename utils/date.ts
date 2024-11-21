@@ -28,3 +28,13 @@ export const dateAsIsoString = (date: Date) => {
   }
   return date.toISOString();
 };
+
+export const getDateString = (date: Date): string => {
+  const str = date.toISOString().split("T")[0];
+  return str;
+};
+
+export const getDateOnly = (date: Date): Date => {
+  const d = new Date(date.setHours(0, 0, 0, 0));
+  return d;
+};
