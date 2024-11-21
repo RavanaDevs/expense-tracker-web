@@ -9,7 +9,6 @@ import { ITEMS_PER_PAGE } from "@/constants/index";
 import { Expense } from "@/types";
 import { useDateRangeStore } from "@/store/dateRangeStore";
 import { dateAsIsoString } from "@/utils/date";
-import { useFilteredExpense } from "@/store/selectors";
 
 export default function ExpenseList() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -23,7 +22,7 @@ export default function ExpenseList() {
     updateExpense,
   } = useExpenseStore();
 
-  const { expenses } = useFilteredExpense();
+  const { expenses } = useExpenseStore();
 
   useEffect(() => {
     console.log(expenses);

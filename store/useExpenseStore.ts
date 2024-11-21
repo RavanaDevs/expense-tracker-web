@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { Expense, QuickAmount } from "@/types";
 import { expenseService } from "@/services/expenses";
+import { useDateRangeStore } from "./dateRangeStore";
 
 interface ExpenseStore {
   expenses: Expense[];
@@ -27,6 +28,7 @@ interface ExpenseStore {
 
 export const useExpenseStore = create<ExpenseStore>((set) => ({
   expenses: [],
+  filteredExpensed: [],
   selectedExpense: null,
   isLoading: false,
   error: null,
