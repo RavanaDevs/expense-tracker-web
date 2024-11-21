@@ -4,15 +4,21 @@ import { useState } from "react";
 import { useExpenseStore } from "@/store/useExpenseStore";
 import { useCurrencyStore } from "@/store/currencyStore";
 import { CATEGORY_OPTIONS } from "@/constants/index";
-import { CurrencyPosition, ExpenseCategory, QuickAmount } from "@/types";
+import {
+  CurrencyPosition,
+  Expense,
+  ExpenseCategory,
+  QuickAmount,
+} from "@/types";
 
 export default function ExpenseForm() {
   const preferences = useExpenseStore((state) => state.preferences);
+  const { addExpense } = useExpenseStore();
   const { settings: currencySettings } = useCurrencyStore();
 
   const [expense, setExpense] = useState({
     amount: "",
-    category: "other" as ExpenseCategory,
+    category: "other",
   });
 
   const enabledQuickAmounts =
@@ -24,7 +30,12 @@ export default function ExpenseForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!expense.amount) return;
-    // add expense
+    const expenseToAdd: Expense = {
+      ...expense,
+      amount: Number(expense.amount),
+      date: new Date(),
+    };
+    addExpense(expenseToAdd);
     setExpense({ amount: "", category: "other" });
   };
 

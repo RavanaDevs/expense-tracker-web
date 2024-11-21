@@ -83,12 +83,7 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
 
   addExpense: async (expense: Expense) => {
     try {
-      const expenseToAdd = {
-        ...expense,
-        amount: Number(expense.amount),
-      };
-
-      const newExpense = await expenseService.createExpense(expenseToAdd);
+      const newExpense = await expenseService.createExpense(expense);
       set((state) => ({
         expenses: [...state.expenses, newExpense],
       }));

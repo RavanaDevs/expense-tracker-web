@@ -23,6 +23,6 @@ const expenseSchema = new Schema<IExpense>(
 expenseSchema.index({ user: 1, date: -1 });
 expenseSchema.index({ category: 1 });
 
-const Expense = models.expense || model<IExpense>("expense", expenseSchema);
+const Expense = models?.expense || model<IExpense>("expense", expenseSchema);
 
 export default Expense;

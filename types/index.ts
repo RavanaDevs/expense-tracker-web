@@ -12,16 +12,21 @@ export type ExpenseCategory =
   | "education"
   | "other";
 
+interface MongoType {
+  _id?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  __v?: string;
+}
 export interface DateRange {
   startDate: string;
   endDate: string;
 }
 
-export interface Expense {
-  _id?: string;
+export interface Expense extends MongoType {
   amount: number;
-  category: ExpenseCategory;
-  date: string;
+  category: string;
+  date?: Date;
   description?: string;
 }
 

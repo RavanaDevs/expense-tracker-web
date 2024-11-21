@@ -25,8 +25,14 @@ export const expenseService = {
   },
 
   async createExpense(expense: Expense) {
-    const response = await api.post<Expense>("/expenses", expense);
-    console.log(response);
-    return response.data;
+    const response = await fetch("/api/expenses", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(expense),
+    });
+    console.log(await response.json);
+    return await response.json();
   },
 };
