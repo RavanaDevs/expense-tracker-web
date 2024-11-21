@@ -5,7 +5,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import { CATEGORY_EMOJIS } from "@/constants/index";
 import { formatCurrency } from "@/utils/currency";
 import { useCurrencyStore } from "@/store/currencyStore";
-import { Expense, CurrencyPosition } from "@/types";
+import { Expense, CurrencyPosition, ExpenseCategory } from "@/types";
+import { useExpenseStore } from "@/store/useExpenseStore";
 
 interface ExpenseDialogProps {
   isOpen: boolean;
@@ -79,7 +80,11 @@ export default function ExpenseDialog({
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <span className="text-2xl">
-                        {CATEGORY_EMOJIS[editedExpense.category]}
+                        {
+                          CATEGORY_EMOJIS[
+                            editedExpense.category as ExpenseCategory
+                          ]
+                        }
                       </span>
                       <Dialog.Title
                         as="h3"
@@ -123,14 +128,15 @@ export default function ExpenseDialog({
                     </label>
                     <input
                       type="date"
-                      disabled
-                      value={editedExpense.date.split("T")[0]}
-                      // onChange={(e) =>
-                      //   setEditedExpense({
-                      //     ...editedExpense,
-                      //     date: e.target.value,
-                      //   })
-                      // }
+                      value={
+                        new Date(editedExpense.date).toISOString().split("T")[0]
+                      }
+                      onChange={(e) =>
+                        setEditedExpense({
+                          ...editedExpense,
+                          date: new Date(e.target.value),
+                        })
+                      }
                       className="block w-full px-4 py-2.5 rounded-md border-0 text-slate-900 dark:text-white bg-white dark:bg-slate-700 ring-1 ring-inset ring-slate-200 dark:ring-slate-600 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400"
                       required
                     />

@@ -1,3 +1,5 @@
+import { string } from "zod";
+
 export type Theme = "light" | "dark";
 
 export type CurrencyPosition = "before" | "after";
@@ -18,6 +20,14 @@ interface MongoType {
   updatedAt?: string;
   __v?: string;
 }
+
+export interface Category {
+  id: string;
+  value: string;
+  label: string;
+  emoji: string;
+  enabled: boolean;
+}
 export interface DateRange {
   startDate: string;
   endDate: string;
@@ -31,6 +41,7 @@ export interface Expense extends MongoType {
 }
 
 export interface QuickAmount {
+  id: string;
   amount: number;
   enabled: boolean;
 }

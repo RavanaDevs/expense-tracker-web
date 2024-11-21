@@ -26,3 +26,34 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "Error" });
   }
 }
+
+export async function PUT(req: NextRequest) {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
+  const expenseId = req.nextUrl.searchParams.get("id");
+  if (!userId) {
+    return NextResponse.json({ message: "Invalid id" }, { status: 404 });
+  }
+
+  await connectToDatabase();
+  try {
+    const validationData = expenseSchema.parse(await req.json());
+
+    const expense = await Expense.findByIdAndUpdate(expenseId, validationData, {
+      new: true,
+    });
+
+    console.log("Updated", expense);
+
+    return NextResponse.json(
+      { message: "Expense Updated", expense },
+      { status: 201 }
+    );
+  } catch (err) {
+    console.log("Error while adding expense. -> ", err);
+    return NextResponse.json({ message: "Error" });
+  }
+}

@@ -72,19 +72,14 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
 
   updateExpense: async (id: string, updatedExpense: Expense) => {
     try {
-      const expenseToUpdate = {
-        ...updatedExpense,
-        amount: Number(updatedExpense.amount),
-      };
-
-      const updated = await expenseService.updateExpense(id, expenseToUpdate);
-
+      const res = await expenseService.updateExpense(id, updatedExpense);
+      const data = await res.json();
       set((state) => ({
         expenses: state.expenses.map((expense) =>
-          expense._id === expenseToUpdate._id ? updated : expense
+          expense._id === updatedExpense._id ? data.expense : expense
         ),
       }));
-      return updated;
+      return data.expense;
     } catch (error) {
       set({ error: "Failed to update expense" });
       console.error("Error updating expense:", error);
