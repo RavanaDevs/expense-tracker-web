@@ -29,8 +29,6 @@ export async function GET(req: NextRequest) {
 
     const expenses = await Expense.find(query);
 
-    console.log(expenses);
-
     return NextResponse.json(expenses);
   } catch (err) {
     console.log("Error while getting expense. -> ", err);

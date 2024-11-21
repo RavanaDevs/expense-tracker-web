@@ -12,7 +12,6 @@ export async function GET(req: NextRequest) {
   await connectToDatabase();
   try {
     const expenses = await Expense.find({ user: userId });
-    console.log(expenses);
     return NextResponse.json(expenses);
   } catch (err) {
     console.log("Error while getting expense. -> ", err);
