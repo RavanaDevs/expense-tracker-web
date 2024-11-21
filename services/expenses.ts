@@ -50,4 +50,27 @@ export const expenseService = {
     });
     return response;
   },
+
+  async getStats(startDate: Date | null, endDate: Date | null) {
+    let params = "?";
+    let startDateParam = "";
+    let endDateParam = "";
+
+    if (startDate && !isNaN(startDate.getTime())) {
+      startDateParam = `startDate=${startDate.toISOString()}&`;
+    }
+
+    if (endDate && !isNaN(endDate.getTime())) {
+      endDateParam = `endDate=${endDate.toISOString()}&`;
+    }
+
+    const response = await fetch(
+      "/api/expenses/stats" + params + startDateParam + endDateParam,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    return response;
+  },
 };

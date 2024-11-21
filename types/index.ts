@@ -58,3 +58,15 @@ export interface Settings {
   dateRange: DateRange;
   categories: string[];
 }
+
+export interface ExpenseStats {
+  total: number;
+  average: number;
+  highest: StatCategory;
+  topCategory: StatCategory;
+}
+
+export interface StatCategory {
+  category: string;
+  count: number;
+}

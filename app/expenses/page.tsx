@@ -14,6 +14,7 @@ export default function ExpensesPage() {
     fetchAllExpenses,
     fetchExpensesByDate,
     fetchExpensesByDateRange,
+    fetchExpenseStats,
   } = useExpenseStore();
   const { startDate, endDate, setStartDate, setEndDate } = useDateRangeStore();
 
@@ -23,15 +24,18 @@ export default function ExpensesPage() {
   const handleSearch = () => {
     if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
       fetchExpensesByDateRange(startDate, endDate);
+      fetchExpenseStats(startDate, endDate);
     } else if (!isNaN(startDate.getTime())) {
       fetchExpensesByDate(startDate);
+      fetchExpenseStats(startDate, null);
     }
     return;
   };
 
   useEffect(() => {
     fetchAllExpenses();
-  }, [fetchAllExpenses]);
+    fetchExpenseStats(null, null);
+  }, [fetchAllExpenses, fetchExpenseStats]);
 
   const handleExport = () => {
     console.log(expenses);

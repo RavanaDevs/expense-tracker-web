@@ -1,10 +1,11 @@
 import { create } from "zustand";
-import { Expense, QuickAmount } from "@/types";
+import { Expense, ExpenseStats, QuickAmount } from "@/types";
 import { expenseService } from "@/services/expenses";
 import { useDateRangeStore } from "./dateRangeStore";
 
 interface ExpenseStore {
   expenses: Expense[];
+  expenseStats: ExpenseStats;
   selectedExpense: Expense | null;
   isLoading: boolean;
   error: string | null;
@@ -19,12 +20,22 @@ interface ExpenseStore {
   fetchAllExpenses: () => Promise<void>;
   fetchExpensesByDate: (date: Date) => Promise<void>;
   fetchExpensesByDateRange: (startDate: Date, endDate: Date) => Promise<void>;
+  fetchExpenseStats: (
+    startDate: Date | null,
+    endDate: Date | null
+  ) => Promise<void>;
   updateExpense: (id: string, updatedExpense: Expense) => Promise<Expense>;
   addExpense: (expense: Expense) => Promise<Expense>;
 }
 
 export const useExpenseStore = create<ExpenseStore>((set) => ({
   expenses: [],
+  expenseStats: {
+    total: 0,
+    average: 0,
+    highest: { category: "N/A", count: 0 },
+    topCategory: { category: "N/A", count: 0 },
+  },
   filteredExpensed: [],
   selectedExpense: null,
   isLoading: false,
@@ -68,6 +79,12 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
       set({ error: "Failed to fetch expenses", isLoading: false });
       console.error("Error fetching expenses:", error);
     }
+  },
+
+  fetchExpenseStats: async (startDate, endDate) => {
+    const res = await expenseService.getStats(startDate, endDate);
+    const data = await res.json();
+    set((state) => ({ expenseStats: data.stats }));
   },
 
   updateExpense: async (id: string, updatedExpense: Expense) => {
