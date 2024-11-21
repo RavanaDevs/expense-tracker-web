@@ -21,7 +21,7 @@ export default function ExpenseCard({ expense, onClick }: ExpenseCardProps) {
             {expense.category}
           </p>
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            {formatDate(expense.date)}
+            {formatDate(expense.date.toString())}
           </p>
         </div>
       </div>

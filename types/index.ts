@@ -45,7 +45,7 @@ export interface CurrencySettings {
 export interface Settings {
   currencySettings: CurrencySettings;
   quickAmounts: QuickAmount[];
-  // categories: string[];
+  categories: Category[];
 }
 
 export interface ExpenseStats {

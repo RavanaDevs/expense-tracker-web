@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useExpenseStore } from "@/store/useExpenseStore";
-import { CATEGORY_OPTIONS } from "@/constants/index";
 import { CurrencyPosition, Expense, QuickAmount } from "@/types";
 import { useSettingsStore } from "@/store/useSettingsStore";
 
@@ -98,7 +97,6 @@ export default function ExpenseForm() {
 
       <div>
         <select
-          value={expense.category}
           onChange={(e) =>
             setExpense({
               ...expense,
@@ -107,15 +105,19 @@ export default function ExpenseForm() {
           }
           className="block w-full px-4 py-3 rounded-md border-0 text-slate-900 dark:text-white ring-1 ring-inset ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400 bg-white dark:bg-slate-700"
         >
-          {CATEGORY_OPTIONS.map((option) => (
-            <option
-              key={option.value}
-              value={option.value}
-              className="dark:bg-slate-700"
-            >
-              {option.label}
-            </option>
-          ))}
+          <option>---</option>
+          {settings.categories.map(
+            (option) =>
+              option.enabled && (
+                <option
+                  key={option.value}
+                  value={option.value}
+                  className="dark:bg-slate-700"
+                >
+                  {option.label}
+                </option>
+              )
+          )}
         </select>
       </div>
 

@@ -62,15 +62,6 @@ export const DEFAULT_CATEGORIES: Category[] = [
   { id: "8", value: "other", label: "Other", emoji: "📌", enabled: true },
 ];
 
-export const CATEGORY_OPTIONS = [
-  { value: "food", label: "Food", emoji: "🍕 " },
-  { value: "transport", label: "Transport", emoji: "🚗 " },
-  { value: "entertainment", label: "Entertainment", emoji: "🎮 " },
-  { value: "shopping", label: "Shopping", emoji: "🛍️ " },
-  { value: "bills", label: "Bills", emoji: "📄 " },
-  { value: "other", label: "Other", emoji: "📌 " },
-];
-
 export const CATEGORY_EMOJIS: Record<string, string> = Object.fromEntries(
   DEFAULT_CATEGORIES.map((cat) => [cat.value, cat.emoji])
 ) as Record<string, string>;

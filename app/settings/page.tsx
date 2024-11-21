@@ -150,10 +150,10 @@ export default function SettingsPage() {
               <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-4">
                 Category Settings
               </h3>
-              {/* <CategorySettings
+              <CategorySettings
                 isOpen={isCategoryDialogOpen}
                 onClose={() => setCategoryDialogOpen(false)}
-              /> */}
+              />
             </div>
           </div>
         </div>
