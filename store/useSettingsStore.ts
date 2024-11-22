@@ -3,6 +3,7 @@ import {
   DEFAULT_CURRENCY_SETTINGS,
   DEFAULT_QUICK_AMOUNTS,
 } from "@/constants";
+import { settingsService } from "@/services/settings";
 import { Category, CurrencySettings, QuickAmount, Settings } from "@/types";
 import { create } from "zustand";
 
@@ -22,6 +23,8 @@ export const useSettingsStore = create<SettingsStore>()((set) => ({
   },
   loadSettings: () => {},
   updateQuickAmounts: async (newAmounts) => {
+    const res = await settingsService.updateQuickAmountSettings(newAmounts);
+    console.log(await res.json());
     set((state) => ({
       settings: { ...state.settings, quickAmounts: newAmounts },
     }));
