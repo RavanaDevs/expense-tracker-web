@@ -2,19 +2,15 @@ import connectToDatabase from "@/lib/database";
 import Expense from "@/models/expenseModel";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
+import { withErrorHandler } from "@/utils/errorHandler";
 
-export async function GET(req: NextRequest) {
+export const GET = withErrorHandler(async (req: NextRequest) => {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
   await connectToDatabase();
-  try {
-    const expenses = await Expense.find({ user: userId });
-    return NextResponse.json(expenses);
-  } catch (err) {
-    console.log("Error while getting expense. -> ", err);
-    return NextResponse.json({ message: "Error" });
-  }
-}
+  const expenses = await Expense.find({ user: userId });
+  return NextResponse.json(expenses);
+});

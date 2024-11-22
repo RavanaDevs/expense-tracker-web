@@ -3,57 +3,44 @@ import Expense from "@/models/expenseModel";
 import { expenseSchema } from "@/validators/expenseSchemaValidator";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
+import { withErrorHandler } from "@/utils/errorHandler";
 
-export async function POST(req: NextRequest) {
+export const POST = withErrorHandler(async (req: NextRequest) => {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
   await connectToDatabase();
-  try {
-    const validationData = expenseSchema.parse(await req.json());
+  const validationData = expenseSchema.parse(await req.json());
+  const e = new Expense({ ...validationData, user: userId });
+  const expense = await e.save();
 
-    const e = new Expense({ ...validationData, user: userId });
-    const expense = await e.save();
+  return NextResponse.json(
+    { message: "Expense Created", expense },
+    { status: 201 }
+  );
+});
 
-    return NextResponse.json(
-      { message: "Expense Created", expense },
-      { status: 201 }
-    );
-  } catch (err) {
-    console.log("Error while adding expense. -> ", err);
-    return NextResponse.json({ message: "Error" });
-  }
-}
-
-export async function PUT(req: NextRequest) {
+export const PUT = withErrorHandler(async (req: NextRequest) => {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
   const expenseId = req.nextUrl.searchParams.get("id");
-  if (!userId) {
+  if (!expenseId) {
     return NextResponse.json({ message: "Invalid id" }, { status: 404 });
   }
 
   await connectToDatabase();
-  try {
-    const validationData = expenseSchema.parse(await req.json());
+  const validationData = expenseSchema.parse(await req.json());
+  const expense = await Expense.findByIdAndUpdate(expenseId, validationData, {
+    new: true,
+  });
 
-    const expense = await Expense.findByIdAndUpdate(expenseId, validationData, {
-      new: true,
-    });
-
-    console.log("Updated", expense);
-
-    return NextResponse.json(
-      { message: "Expense Updated", expense },
-      { status: 201 }
-    );
-  } catch (err) {
-    console.log("Error while adding expense. -> ", err);
-    return NextResponse.json({ message: "Error" });
-  }
-}
+  return NextResponse.json(
+    { message: "Expense Updated", expense },
+    { status: 201 }
+  );
+});
