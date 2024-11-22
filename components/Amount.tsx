@@ -1,7 +1,6 @@
 import { useSettingsStore } from "@/store/useSettingsStore";
-import { CurrencySettings } from "@/types";
 
-export const formatCurrency = (amount: number): string => {
+export default function Amount({ amount }: { amount: number }) {
   const currencySettings = useSettingsStore(
     (state) => state.settings.currencySettings
   );
@@ -9,4 +8,4 @@ export const formatCurrency = (amount: number): string => {
   return currencySettings.position === "before"
     ? `${currencySettings.symbol}${formattedAmount}`
     : `${formattedAmount}${currencySettings.symbol}`;
-};
+}

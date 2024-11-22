@@ -2,7 +2,6 @@
 
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { useCurrencyStore } from "@/store/currencyStore";
 import { CurrencyPosition, CurrencySettings } from "@/types";
 import { useSettingsStore } from "@/store/useSettingsStore";
 

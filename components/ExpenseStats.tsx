@@ -1,7 +1,7 @@
 import { useExpenseStore } from "@/store/useExpenseStore";
 import { useSettingsStore } from "@/store/useSettingsStore";
-import { formatCurrency } from "@/utils/currency";
 import { useEffect } from "react";
+import Amount from "./Amount";
 
 export default function ExpenseStats() {
   const { expenseStats } = useExpenseStore();
@@ -43,13 +43,13 @@ export default function ExpenseStats() {
       <div className="p-4 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors bg-white dark:bg-slate-800">
         <h3 className="text-sm text-slate-600 dark:text-slate-400">Total</h3>
         <p className="text-2xl font-medium text-slate-900 dark:text-white mt-1">
-          {formatCurrency(evalStats().total)}
+          <Amount amount={evalStats().total} />
         </p>
       </div>
       <div className="p-4 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors bg-white dark:bg-slate-800">
         <h3 className="text-sm text-slate-600 dark:text-slate-400">Average</h3>
         <p className="text-2xl font-medium text-slate-900 dark:text-white mt-1">
-          {formatCurrency(evalStats().average)}
+          <Amount amount={evalStats().average} />
         </p>
       </div>
       <div className="p-4 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors bg-white dark:bg-slate-800">

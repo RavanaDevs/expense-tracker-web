@@ -1,7 +1,6 @@
 import { Expense } from "@/types";
 import { formatDate } from "@/utils/date";
-import { formatCurrency } from "@/utils/currency";
-import { useSettingsStore } from "@/store/useSettingsStore";
+import Amount from "./Amount";
 
 interface ExpenseCardProps {
   expense: Expense;
@@ -9,9 +8,6 @@ interface ExpenseCardProps {
 }
 
 export default function ExpenseCard({ expense, onClick }: ExpenseCardProps) {
-  const currencySettings = useSettingsStore(
-    (state) => state.settings.currencySettings
-  );
   return (
     <div
       className="flex justify-between items-center p-4 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors bg-white dark:bg-slate-800 cursor-pointer"
@@ -29,7 +25,7 @@ export default function ExpenseCard({ expense, onClick }: ExpenseCardProps) {
         </div>
       </div>
       <span className="font-medium text-slate-900 dark:text-white">
-        {formatCurrency(expense.amount)}
+        <Amount amount={expense.amount} />
       </span>
     </div>
   );
