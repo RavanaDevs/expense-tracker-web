@@ -10,7 +10,7 @@ if (!MONGODB_URI) {
 declare global {
   var mongoose: {
     conn: mongoose.Connection | null;
-    promise: Promise<typeof mongoose> | null;
+    promise: Promise<mongoose.Connection> | null;
   };
 }
 
@@ -20,7 +20,7 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
-async function connectToDatabase() {
+async function connectToDatabase(): Promise<mongoose.Connection> {
   if (cached.conn) {
     return cached.conn;
   }
