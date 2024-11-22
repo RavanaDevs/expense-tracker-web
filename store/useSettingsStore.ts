@@ -21,7 +21,16 @@ export const useSettingsStore = create<SettingsStore>()((set) => ({
     currencySettings: DEFAULT_CURRENCY_SETTINGS,
     categories: DEFAULT_CATEGORIES,
   },
-  loadSettings: () => {},
+  loadSettings: async () => {
+    const res = await fetch("/api/settings");
+    const data = await res.json();
+    set((state) => ({
+      settings: {
+        ...state.settings,
+        ...data,
+      },
+    }));
+  },
   updateQuickAmounts: async (newAmounts) => {
     const res = await settingsService.updateQuickAmountSettings(newAmounts);
     console.log(await res.json());
