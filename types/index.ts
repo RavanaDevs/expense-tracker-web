@@ -29,7 +29,6 @@ export interface Expense extends MongoType {
 }
 
 export interface QuickAmount {
-  id: string;
   amount: number;
   enabled: boolean;
 }

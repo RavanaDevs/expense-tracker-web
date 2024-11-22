@@ -7,12 +7,12 @@ export const DEFAULT_CURRENCY_SETTINGS: CurrencySettings = {
 };
 
 export const DEFAULT_QUICK_AMOUNTS: QuickAmount[] = [
-  { id: "1", amount: 10, enabled: true },
-  { id: "2", amount: 20, enabled: true },
-  { id: "3", amount: 50, enabled: true },
-  { id: "4", amount: 100, enabled: true },
-  { id: "5", amount: 500, enabled: true },
-  { id: "6", amount: 1000, enabled: true },
+  { amount: 10, enabled: true },
+  { amount: 20, enabled: true },
+  { amount: 50, enabled: true },
+  { amount: 100, enabled: true },
+  { amount: 500, enabled: true },
+  { amount: 1000, enabled: true },
 ];
 
 export const DEFAULT_CATEGORIES: Category[] = [
