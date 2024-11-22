@@ -1,8 +1,14 @@
 import connectToDatabase from "@/lib/database";
 import Expense from "@/models/expenseModel";
-import { ExpenseStats } from "@/types";
+import {
+  Category,
+  Expense as ExpenseType,
+  ExpenseStats,
+  StatCategory,
+} from "@/types";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
+import { number, object } from "zod";
 
 export async function GET(req: NextRequest) {
   const { userId } = await auth();
@@ -36,8 +42,8 @@ export async function GET(req: NextRequest) {
         {
           total: 0,
           average: 0,
-          highest: null,
-          topCategory: null,
+          highest: { category: null, count: 0 },
+          topCategory: { category: null, count: 0 },
         },
         { status: 200 }
       );
@@ -49,39 +55,53 @@ export async function GET(req: NextRequest) {
     // Calculate average
     const average = total / expenses.length;
 
+    type CategoryValue = {
+      count: number;
+      value: Category | null;
+    };
+
+    type CategoryFreequency = Record<string, CategoryValue>;
+
+    console.log(expenses);
+
     // Find highest expense category
-    const highest = expenses.reduce(
-      (max, expense) => {
-        return expense.amount > max.amount
-          ? { category: expense.category, amount: expense.amount }
+    const highest: CategoryValue = expenses.reduce(
+      (max: CategoryValue, expense) => {
+        return expense.amount > max.count
+          ? { count: expense.amount, value: expense.category }
           : max;
       },
-      { category: "", amount: 0 }
+      { value: null, count: 0 }
     );
 
-    // Calculate category frequencies
-    const categoryFrequency = expenses.reduce(
-      (freq: { [key: string]: number }, expense) => {
-        freq[expense.category] = (freq[expense.category] || 0) + 1;
+    //Calculate category freequencies
+    const categoryFrequency: CategoryFreequency = expenses.reduce(
+      (freq: CategoryFreequency, expense: ExpenseType) => {
+        const key = expense.category.category.toString();
+        freq[key] = freq[key]
+          ? { count: (freq[key].count || 0) + 1, value: expense.category }
+          : { count: 1, value: expense.category };
         return freq;
       },
       {}
     );
 
-    // Find most frequent category
-    const topCategory = Object.entries(categoryFrequency).reduce(
-      (max, [category, count]) => {
-        return count > max.count ? { category, count } : max;
+    //Calculate top category
+    const topCategory: CategoryValue = Object.values(categoryFrequency).reduce(
+      (max: CategoryValue, record) => {
+        return record.count > max.count ? record : max;
       },
-      { category: "", count: 0 }
+      { value: null, count: 0 }
     );
 
     const stats: ExpenseStats = {
       total,
       average,
-      highest,
-      topCategory,
+      highest: { category: highest.value, count: highest.count },
+      topCategory: { category: topCategory.value, count: topCategory.count },
     };
+
+    console.log(stats);
 
     return NextResponse.json({ stats }, { status: 200 });
   } catch (err) {

@@ -33,8 +33,8 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
   expenseStats: {
     total: 0,
     average: 0,
-    highest: { category: "N/A", count: 0 },
-    topCategory: { category: "N/A", count: 0 },
+    highest: { category: null, count: 0 },
+    topCategory: { category: null, count: 0 },
   },
   filteredExpensed: [],
   selectedExpense: null,

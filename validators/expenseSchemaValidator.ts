@@ -2,7 +2,11 @@ import { z } from "zod";
 
 export const expenseSchema = z.object({
   amount: z.number().positive("Amount must be positive"),
-  category: z.any(),
+  category: z.object({
+    category: z.string(),
+    emoji: z.string(),
+    enabled: z.boolean(),
+  }),
   description: z.string().optional(),
   date: z.string().datetime({ message: "Invalid ISO date format" }),
 });

@@ -54,6 +54,6 @@ export interface ExpenseStats {
 }
 
 export interface StatCategory {
-  category: string;
+  category: Category | null;
   count: number;
 }

@@ -33,7 +33,7 @@ export default function ExpensesPage() {
 
   useEffect(() => {
     fetchAllExpenses();
-    // const stats = fetchExpenseStats(null, null);
+    fetchExpenseStats(null, null);
   }, [fetchAllExpenses, fetchExpenseStats]);
 
   const handleExport = () => {
