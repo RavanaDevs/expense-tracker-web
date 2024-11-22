@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { QuickAmount } from "@/types";
-import { DEFAULT_QUICK_AMOUNTS } from "@/constants/index";
 import { formatCurrency } from "@/utils/currency";
 import { useSettingsStore } from "@/store/useSettingsStore";
 
@@ -25,10 +24,10 @@ export default function QuickAmountSettings({
     useState<QuickAmount[]>(quickAmountSettings);
   const [newAmount, setNewAmount] = useState("");
 
-  const handleToggle = (id: string) => {
+  const handleToggle = (id: number) => {
     setQuickAmounts((prev) =>
-      prev.map((amount) =>
-        amount.id === id ? { ...amount, enabled: !amount.enabled } : amount
+      prev.map((amount, index) =>
+        index === id ? { ...amount, enabled: !amount.enabled } : amount
       )
     );
   };
@@ -36,19 +35,13 @@ export default function QuickAmountSettings({
   const handleAdd = () => {
     const amount = parseFloat(newAmount);
     if (amount > 0) {
-      const newId = (
-        Math.max(...quickAmounts.map((a) => parseInt(a.id))) + 1
-      ).toString();
-      setQuickAmounts((prev) => [
-        ...prev,
-        { id: newId, amount, enabled: true },
-      ]);
+      setQuickAmounts((prev) => [...prev, { amount, enabled: true }]);
       setNewAmount("");
     }
   };
 
-  const handleRemove = (id: string) => {
-    setQuickAmounts((prev) => prev.filter((amount) => amount.id !== id));
+  const handleRemove = (id: number) => {
+    setQuickAmounts((prev) => prev.filter((_, index) => index !== id));
   };
 
   const handleSave = () => {
@@ -82,9 +75,9 @@ export default function QuickAmountSettings({
         <div className="space-y-2">
           {quickAmounts
             .sort((a, b) => a.amount - b.amount)
-            .map((amount) => (
+            .map((amount, index) => (
               <div
-                key={amount.id}
+                key={index}
                 className="flex items-center justify-between p-3 rounded-md bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600"
               >
                 <div className="flex items-center space-x-3">
@@ -92,7 +85,7 @@ export default function QuickAmountSettings({
                     <input
                       type="checkbox"
                       checked={amount.enabled}
-                      onChange={() => handleToggle(amount.id)}
+                      onChange={() => handleToggle(index)}
                       className="sr-only peer"
                     />
                     <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-slate-300 dark:peer-focus:ring-slate-800 rounded-full peer dark:bg-slate-600 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-slate-800 dark:peer-checked:bg-slate-700"></div>
@@ -102,7 +95,7 @@ export default function QuickAmountSettings({
                   </span>
                 </div>
                 <button
-                  onClick={() => handleRemove(amount.id)}
+                  onClick={() => handleRemove(index)}
                   className="p-1 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 transition-colors"
                 >
                   ✕

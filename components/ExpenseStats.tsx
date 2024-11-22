@@ -1,9 +1,13 @@
 import { useExpenseStore } from "@/store/useExpenseStore";
+import { useSettingsStore } from "@/store/useSettingsStore";
 import { formatCurrency } from "@/utils/currency";
 import { useEffect } from "react";
 
 export default function ExpenseStats() {
   const { expenseStats } = useExpenseStore();
+  const currencySettings = useSettingsStore(
+    (state) => state.settings.currencySettings
+  );
 
   type Stats = {
     total: number;

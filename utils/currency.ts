@@ -1,5 +1,5 @@
-import { useCurrencyStore } from "@/store/currencyStore";
 import { useSettingsStore } from "@/store/useSettingsStore";
+import { CurrencySettings } from "@/types";
 
 export const formatCurrency = (amount: number): string => {
   const currencySettings = useSettingsStore(
