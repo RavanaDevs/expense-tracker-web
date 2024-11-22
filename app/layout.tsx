@@ -4,6 +4,7 @@ import "./globals.css";
 import SideDrawer from "@/components/ui/SideDrawer";
 import TopNav from "@/components/ui/TopNav";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,16 +19,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} bg-slate-50 dark:bg-slate-900 min-h-screen transition-colors`}>
-        <ThemeProvider>
-          <TopNav />
-          <SideDrawer />
-          <main className="container mx-auto px-4 py-4 sm:py-8">
-            {children}
-          </main>
-        </ThemeProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={`${inter.className} bg-slate-50 dark:bg-slate-900 min-h-screen transition-colors`}
+        >
+          <ThemeProvider>
+            <TopNav />
+            <SideDrawer />
+            <main className="container mx-auto px-4 py-4 sm:py-8">
+              {children}
+            </main>
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

@@ -1,36 +1,44 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import ExpenseDialog from './ExpenseDialog';
-import Pagination from './Pagination';
-import ExpenseCard from './expenses/ExpenseCard';
-import { useExpenses } from '@/store/selectors';
-import { ITEMS_PER_PAGE } from '@/constants/index';
-import { Expense } from '@/types';
+import { useState, useEffect } from "react";
+import ExpenseDialog from "./ExpenseDialog";
+import Pagination from "./Pagination";
+import ExpenseCard from "./expenses/ExpenseCard";
+import { useExpenseStore } from "@/store/useExpenseStore";
+import { ITEMS_PER_PAGE } from "@/constants/index";
+import { Expense } from "@/types";
+import { useDateRangeStore } from "@/store/dateRangeStore";
+import { dateAsIsoString } from "@/utils/date";
 
-interface ExpenseListProps {
-  dateRange: {
-    startDate: string;
-    endDate: string;
-  };
-}
-
-export default function ExpenseList({ dateRange }: ExpenseListProps) {
-  const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
+export default function ExpenseList() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { expenses, updateExpense, deleteExpense } = useExpenses();
+  const {
+    selectedExpense,
+    isLoading,
+    error,
+    setSelectedExpense,
+    updateExpense,
+  } = useExpenseStore();
 
-  // Filter expenses based on date range
-  const filteredExpenses = expenses.filter(expense => 
-    expense.date >= dateRange.startDate && expense.date <= dateRange.endDate
-  );
+  const { expenses } = useExpenseStore();
+
+  if (isLoading) {
+    return <div className="text-center py-8">Loading expenses...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center py-8 text-red-500">{error}</div>;
+  }
 
   // Calculate pagination
-  const totalPages = Math.ceil(filteredExpenses.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(expenses.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedExpenses = filteredExpenses.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const paginatedExpenses = expenses.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
 
   const handleExpenseClick = (expense: Expense) => {
     setSelectedExpense(expense);
@@ -38,11 +46,11 @@ export default function ExpenseList({ dateRange }: ExpenseListProps) {
   };
 
   const handleSaveExpense = (updatedExpense: Expense) => {
-    updateExpense(updatedExpense.id, updatedExpense);
+    updateExpense(updatedExpense._id!, updatedExpense);
     setIsDialogOpen(false);
   };
 
-  if (filteredExpenses.length === 0) {
+  if (expenses.length === 0) {
     return (
       <div className="text-center py-8 text-slate-600 dark:text-slate-400">
         No expenses found for the selected date range
@@ -55,7 +63,7 @@ export default function ExpenseList({ dateRange }: ExpenseListProps) {
       <div className="space-y-3">
         {paginatedExpenses.map((expense) => (
           <ExpenseCard
-            key={expense.id}
+            key={expense._id}
             expense={expense}
             onClick={handleExpenseClick}
           />
@@ -71,11 +79,14 @@ export default function ExpenseList({ dateRange }: ExpenseListProps) {
       {selectedExpense && (
         <ExpenseDialog
           isOpen={isDialogOpen}
-          closeDialog={() => setIsDialogOpen(false)}
+          closeDialog={() => {
+            setIsDialogOpen(false);
+            setSelectedExpense(null);
+          }}
           expense={selectedExpense}
           onSave={handleSaveExpense}
         />
       )}
     </>
   );
-} 
+}

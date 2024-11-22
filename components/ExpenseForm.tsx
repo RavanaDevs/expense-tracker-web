@@ -1,53 +1,58 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useStore } from '@/store/useStore';
-import { useCurrencyStore } from '@/store/currencyStore';
-import { CATEGORY_OPTIONS } from "@/constants/index"
-import { CurrencyPosition, ExpenseCategory, QuickAmount } from '@/types';
+import { useState } from "react";
+import { useExpenseStore } from "@/store/useExpenseStore";
+import { Category, CurrencyPosition, Expense, QuickAmount } from "@/types";
+import { useSettingsStore } from "@/store/useSettingsStore";
 
 export default function ExpenseForm() {
-  const settings = useStore((state) => state.settings);
-  const addExpense = useStore((state) => state.addExpense);
-  const { settings: currencySettings } = useCurrencyStore();
+  const { addExpense } = useExpenseStore();
+  const { settings } = useSettingsStore();
 
-  const [expense, setExpense] = useState({
-    amount: '',
-    category: 'other' as ExpenseCategory
+  const [expense, setExpense] = useState<any>({
+    amount: "",
   });
 
-  const enabledQuickAmounts = settings.quickAmounts
-    ?.filter((qa: QuickAmount) => qa.enabled)
-    .map((qa: QuickAmount) => qa.amount)
-    .sort((a: number, b: number) => a - b) || [];
+  const enabledQuickAmounts =
+    settings.quickAmounts
+      ?.filter((qa) => qa.enabled)
+      .map((qa) => qa.amount)
+      .sort((a, b) => a - b) || [];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!expense.amount) return;
-
-    addExpense({
-      amount: parseFloat(expense.amount),
-      category: expense.category,
-      date: new Date().toISOString().split('T')[0],
-    });
-
-    setExpense({ amount: '', category: 'other' });
+    const expenseToAdd: Expense = {
+      ...expense,
+      amount: Number(expense.amount),
+      date: new Date(),
+    };
+    console.log(expenseToAdd);
+    addExpense(expenseToAdd);
+    setExpense({ amount: "" });
   };
 
   const handleQuickAdd = (amount: number) => {
-    const currentAmount = expense.amount === '' ? 0 : parseFloat(expense.amount);
+    const currentAmount =
+      expense.amount === "" ? 0 : parseFloat(expense.amount);
     setExpense({
       ...expense,
-      amount: (currentAmount + amount).toString()
+      amount: (currentAmount + amount).toString(),
     });
   };
 
   const renderCurrencySymbol = (position: CurrencyPosition) => {
-    if (currencySettings.position !== position) return null;
+    if (settings.currencySettings.position !== position) return null;
 
     return (
-      <div className={`pointer-events-none absolute inset-y-0 ${position === 'before' ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center`}>
-        <span className="text-slate-600 dark:text-slate-400 sm:text-sm">{currencySettings.symbol}</span>
+      <div
+        className={`pointer-events-none absolute inset-y-0 ${
+          position === "before" ? "left-0 pl-3" : "right-0 pr-3"
+        } flex items-center`}
+      >
+        <span className="text-slate-600 dark:text-slate-400 sm:text-sm">
+          {settings.currencySettings.symbol}
+        </span>
       </div>
     );
   };
@@ -56,17 +61,21 @@ export default function ExpenseForm() {
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
         <div className="relative mt-2 rounded-md shadow-sm">
-          {renderCurrencySymbol('before')}
+          {renderCurrencySymbol("before")}
           <input
             type="number"
             value={expense.amount}
             onChange={(e) => setExpense({ ...expense, amount: e.target.value })}
             placeholder="0.00"
             className={`block w-full px-4 py-3 rounded-md border-0 text-slate-900 dark:text-white ring-1 ring-inset ring-slate-200 dark:ring-slate-700 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400 text-lg bg-white dark:bg-slate-700
-              ${currencySettings.position === 'before' ? 'pl-7' : 'pr-7'}`}
+              ${
+                settings.currencySettings.position === "before"
+                  ? "pl-7"
+                  : "pr-7"
+              }`}
             required
           />
-          {renderCurrencySymbol('after')}
+          {renderCurrencySymbol("after")}
         </div>
 
         {/* Quick Add Buttons */}
@@ -88,15 +97,23 @@ export default function ExpenseForm() {
 
       <div>
         <select
-          value={expense.category}
-          onChange={(e) => setExpense({ ...expense, category: e.target.value as ExpenseCategory })}
+          onChange={(e) =>
+            setExpense({
+              ...expense,
+              category: settings.categories[Number(e.target.value)],
+            })
+          }
           className="block w-full px-4 py-3 rounded-md border-0 text-slate-900 dark:text-white ring-1 ring-inset ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-slate-800 dark:focus:ring-slate-400 bg-white dark:bg-slate-700"
         >
-          {CATEGORY_OPTIONS.map(option => (
-            <option key={option.value} value={option.value} className="dark:bg-slate-700">
-              {option.label}
-            </option>
-          ))}
+          <option>---</option>
+          {settings.categories.map(
+            (category, index) =>
+              category.enabled && (
+                <option key={index} value={index} className="dark:bg-slate-700">
+                  {category.category}
+                </option>
+              )
+          )}
         </select>
       </div>
 
@@ -108,4 +125,4 @@ export default function ExpenseForm() {
       </button>
     </form>
   );
-} 
+}

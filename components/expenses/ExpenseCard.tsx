@@ -1,7 +1,6 @@
 import { Expense } from "@/types";
-import { CATEGORY_EMOJIS } from '@/constants/index';
 import { formatDate } from "@/utils/date";
-import { formatCurrency } from "@/utils/currency";
+import Amount from "../Amount";
 
 interface ExpenseCardProps {
   expense: Expense;
@@ -15,13 +14,19 @@ export default function ExpenseCard({ expense, onClick }: ExpenseCardProps) {
       onClick={() => onClick(expense)}
     >
       <div className="flex items-center space-x-3">
-        <span className="text-xl">{CATEGORY_EMOJIS[expense.category]}</span>
+        <span className="text-xl">{expense.category.emoji}</span>
         <div>
-          <p className="text-sm text-slate-700 dark:text-slate-300 capitalize">{expense.category}</p>
-          <p className="text-xs text-slate-500 dark:text-slate-400">{formatDate(expense.date)}</p>
+          <p className="text-sm text-slate-700 dark:text-slate-300 capitalize">
+            {expense.category.category!}
+          </p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            {formatDate(expense.date)}
+          </p>
         </div>
       </div>
-      <span className="font-medium text-slate-900 dark:text-white">{formatCurrency(expense.amount)}</span>
+      <span className="font-medium text-slate-900 dark:text-white">
+        <Amount amount={expense.amount} />
+      </span>
     </div>
   );
-} 
+}
