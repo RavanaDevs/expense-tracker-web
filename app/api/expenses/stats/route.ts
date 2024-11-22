@@ -11,6 +11,8 @@ import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { number, object } from "zod";
 
+export const dynamic = "force-dynamic";
+
 export const GET = withErrorHandler(async (req: NextRequest) => {
   const { userId } = await auth();
   if (!userId) {

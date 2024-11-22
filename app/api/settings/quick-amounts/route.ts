@@ -4,6 +4,8 @@ import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { getOrCreate } from "../util";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: NextRequest) {
   const { userId } = await auth();
   if (!userId) {
