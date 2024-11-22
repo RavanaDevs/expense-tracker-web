@@ -9,7 +9,7 @@ import { create } from "zustand";
 
 interface SettingsStore {
   settings: Settings;
-  loadSettings: () => void;
+  loadSettings: () => Promise<void>;
   updateQuickAmounts: (newAmounts: QuickAmount[]) => Promise<void>;
   updateCurrencySettings: (newSettings: CurrencySettings) => Promise<void>;
   updateCategories: (newCategories: Category[]) => Promise<void>;
@@ -22,14 +22,19 @@ export const useSettingsStore = create<SettingsStore>()((set) => ({
     categories: DEFAULT_CATEGORIES,
   },
   loadSettings: async () => {
-    const res = await fetch("/api/settings");
-    const data = await res.json();
-    set((state) => ({
-      settings: {
-        ...state.settings,
-        ...data,
-      },
-    }));
+    try {
+      const res = await settingsService.getAllSettings();
+      const data = await res.json();
+      set((state) => ({
+        settings: {
+          quickAmounts: data.quickAmounts || DEFAULT_QUICK_AMOUNTS,
+          currencySettings: data.currencySettings || DEFAULT_CURRENCY_SETTINGS,
+          categories: data.categories || DEFAULT_CATEGORIES,
+        },
+      }));
+    } catch (error) {
+      console.error("Error loading settings:", error);
+    }
   },
   updateQuickAmounts: async (newAmounts) => {
     const res = await settingsService.updateQuickAmountSettings(newAmounts);
@@ -39,11 +44,15 @@ export const useSettingsStore = create<SettingsStore>()((set) => ({
     }));
   },
   updateCurrencySettings: async (newSettings) => {
+    const res = await settingsService.updateCurrencySettings(newSettings);
+    console.log(await res.json());
     set((state) => ({
       settings: { ...state.settings, currencySettings: newSettings },
     }));
   },
   updateCategories: async (newCategories) => {
+    const res = await settingsService.updateCategorySettings(newCategories);
+    console.log(await res.json());
     set((state) => ({
       settings: { ...state.settings, categories: newCategories },
     }));
