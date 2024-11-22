@@ -21,40 +21,21 @@ export const useSettingsStore = create<SettingsStore>()((set) => ({
     currencySettings: DEFAULT_CURRENCY_SETTINGS,
     categories: DEFAULT_CATEGORIES,
   },
-  loadSettings: async () => {
-    try {
-      const res = await settingsService.getAllSettings();
-      const data = await res.json();
-      console.log(data);
-      set((state) => ({
-        settings: {
-          quickAmounts: data.quickAmounts || DEFAULT_QUICK_AMOUNTS,
-          currencySettings: data.currencySettings || DEFAULT_CURRENCY_SETTINGS,
-          categories: data.categories || DEFAULT_CATEGORIES,
-        },
-      }));
-      return data;
-    } catch (error) {
-      console.error("Error loading settings:", error);
-    }
-  },
+  loadSettings: async () => {},
   updateQuickAmounts: async (newAmounts) => {
-    const res = await settingsService.updateQuickAmountSettings(newAmounts);
-    console.log(await res.json());
+    // const res = await settingsService.updateQuickAmountSettings(newAmounts);
     set((state) => ({
       settings: { ...state.settings, quickAmounts: newAmounts },
     }));
   },
   updateCurrencySettings: async (newSettings) => {
-    const res = await settingsService.updateCurrencySettings(newSettings);
-    console.log(await res.json());
+    // const res = await settingsService.updateCurrencySettings(newSettings);
     set((state) => ({
       settings: { ...state.settings, currencySettings: newSettings },
     }));
   },
   updateCategories: async (newCategories) => {
-    const res = await settingsService.updateCategorySettings(newCategories);
-    console.log(await res.json());
+    // const res = await settingsService.updateCategorySettings(newCategories);
     set((state) => ({
       settings: { ...state.settings, categories: newCategories },
     }));

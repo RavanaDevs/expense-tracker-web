@@ -14,10 +14,6 @@ export default function SettingsPage() {
   const { theme, toggleTheme } = useTheme();
   const { settings, loadSettings } = useSettingsStore();
 
-  useEffect(() => {
-    loadSettings();
-  }, [loadSettings]);
-
   return (
     <div className="w-full max-w-2xl mx-auto">
       <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-lg shadow-md space-y-6">
