@@ -25,6 +25,7 @@ export const useSettingsStore = create<SettingsStore>()((set) => ({
     try {
       const res = await settingsService.getAllSettings();
       const data = await res.json();
+      console.log(data);
       set((state) => ({
         settings: {
           quickAmounts: data.quickAmounts || DEFAULT_QUICK_AMOUNTS,
@@ -32,6 +33,7 @@ export const useSettingsStore = create<SettingsStore>()((set) => ({
           categories: data.categories || DEFAULT_CATEGORIES,
         },
       }));
+      return data;
     } catch (error) {
       console.error("Error loading settings:", error);
     }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 import CurrencySettingsDialog from "@/components/settings/CurrencySettingsDialog";
 import QuickAmountSettings from "@/components/settings/QuickAmountSettings";
@@ -12,7 +12,11 @@ export default function SettingsPage() {
   const [isQuickAmountDialogOpen, setIsQuickAmountDialogOpen] = useState(false);
   const [isCategoryDialogOpen, setCategoryDialogOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
-  const { settings } = useSettingsStore();
+  const { settings, loadSettings } = useSettingsStore();
+
+  useEffect(() => {
+    loadSettings();
+  }, [loadSettings]);
 
   return (
     <div className="w-full max-w-2xl mx-auto">
